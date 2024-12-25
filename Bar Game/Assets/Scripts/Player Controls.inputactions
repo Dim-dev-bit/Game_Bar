@@ -2,7 +2,7 @@
     "name": "Player Controls",
     "maps": [
         {
-            "name": "Movement",
+            "name": "Player",
             "id": "82f456a1-8d90-41c4-8bb5-e649c57b61f3",
             "actions": [
                 {
