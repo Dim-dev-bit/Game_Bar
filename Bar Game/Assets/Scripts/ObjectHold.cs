@@ -10,7 +10,7 @@ namespace BarGame {
         private GameObject _pickUp;
 
         [SerializeField]
-        private float _lookRadius = 5f;
+        private float _lookRadius = 1f;
 
 
         void Update()
@@ -27,7 +27,6 @@ namespace BarGame {
                     IsHold = false;
 
             }
-
             if (IsHold)
                 _pickUp.transform.position = holdPoint.position;
         }
@@ -41,14 +40,12 @@ namespace BarGame {
             var mask = LayerUtils.PickUpLayer;
 
             var size = Physics2D.OverlapCircleNonAlloc(position, radius, _colliders, mask);
-            Debug.Log(size);
             if (size > 0)
             {
                 for (int i = 0; i < size; i++)
                 {
                     if (_colliders[i].gameObject != gameObject)
                     {
-                        Debug.Log("0");
                         pickUp = _colliders[i].gameObject;
                         break;
                     }
