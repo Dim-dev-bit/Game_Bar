@@ -3,9 +3,14 @@ using UnityEngine;
 namespace BarGame {
     public class ObjectHold : MonoBehaviour {
         public bool IsHold;
-        public float distance = 2f;
+
         public Transform holdPoint;
-        RaycastHit2D hit;
+
+        private Collider2D[] _colliders = new Collider2D[2];
+        private GameObject _pickUp;
+
+        [SerializeField]
+        private float _lookRadius = 5f;
 
 
         void Update()
@@ -14,39 +19,42 @@ namespace BarGame {
             {
                 if (!IsHold)
                 {
-                    Physics2D.queriesStartInColliders = false; 
-                    if (IsFacingRight())
-                        hit = Physics2D.Raycast(transform.position, Vector2.right * transform.localScale.x, distance);
-                    else
-                        hit = Physics2D.Raycast(transform.position, Vector2.left * transform.localScale.x, distance);
-
-
-                    if (hit.collider != null && hit.collider.tag == TagUtils.PickUpTagName)
+                    _pickUp = GetPickUp();
+                    if (_pickUp != null)
                         IsHold = true;
                 }
-            } 
+                else
+                    IsHold = false;
+
+            }
 
             if (IsHold)
+                _pickUp.transform.position = holdPoint.position;
+        }
+
+        private GameObject GetPickUp()
+        {
+            GameObject pickUp = null;
+
+            var position = transform.position;
+            var radius = _lookRadius;
+            var mask = LayerUtils.PickUpLayer;
+
+            var size = Physics2D.OverlapCircleNonAlloc(position, radius, _colliders, mask);
+            Debug.Log(size);
+            if (size > 0)
             {
-                hit.collider.gameObject.transform.position = holdPoint.position;
+                for (int i = 0; i < size; i++)
+                {
+                    if (_colliders[i].gameObject != gameObject)
+                    {
+                        Debug.Log("0");
+                        pickUp = _colliders[i].gameObject;
+                        break;
+                    }
+                }
             }
-        }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawLine(transform.position, transform.position + Vector3.right * transform.localScale.x * distance);
-        }
-
-        private bool IsFacingRight()
-        {
-            Vector3 mousePos = Input.mousePosition;
-            Vector3 playerScreenPoint = Camera.main.WorldToScreenPoint(transform.position);
-
-            if (mousePos.x > playerScreenPoint.x)
-                return true;
-            else
-                return false;
+            return pickUp;
         }
     }
 }

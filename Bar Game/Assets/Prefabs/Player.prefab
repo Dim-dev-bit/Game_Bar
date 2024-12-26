@@ -133,6 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49036019a70926d48b50ccb41896d696, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  holdPosition: {fileID: 0}
   moveSpeed: 4
 --- !u!50 &6787831601608432357
 Rigidbody2D:
@@ -230,5 +231,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsHold: 0
-  distance: 1
   holdPoint: {fileID: 8027345162750074301}
+  _lookRadius: 1

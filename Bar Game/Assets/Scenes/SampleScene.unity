@@ -2473,26 +2473,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!1 &1940818803 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1761582512909290829, guid: d7c7d6427bb61f54eb4a30edf379e0ef, type: 3}
-  m_PrefabInstance: {fileID: 4852317455671902007}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1940818810
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1940818803}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20ec4e00bc0c4c14f9436646275372fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IsHold: 0
-  distance: 1
-  holdPoint: {fileID: 1307897149}
 --- !u!1 &2107842599
 GameObject:
   m_ObjectHideFlags: 0
@@ -3772,20 +3752,32 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2693813555810607070, guid: 6323f640e14cde243844a0b1706e8617, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2693813555810607070, guid: 6323f640e14cde243844a0b1706e8617, type: 3}
       propertyPath: m_TagString
       value: PickUp
       objectReference: {fileID: 0}
     - target: {fileID: 4813483083826646324, guid: 6323f640e14cde243844a0b1706e8617, type: 3}
       propertyPath: m_SortingOrder
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5311421371251991011, guid: 6323f640e14cde243844a0b1706e8617, type: 3}
       propertyPath: m_Name
       value: Bottle
       objectReference: {fileID: 0}
     - target: {fileID: 5311421371251991011, guid: 6323f640e14cde243844a0b1706e8617, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5311421371251991011, guid: 6323f640e14cde243844a0b1706e8617, type: 3}
       propertyPath: m_TagString
       value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 8782783393563891918, guid: 6323f640e14cde243844a0b1706e8617, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9018084109596847590, guid: 6323f640e14cde243844a0b1706e8617, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3885,6 +3877,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2985758141766512311, guid: d7c7d6427bb61f54eb4a30edf379e0ef, type: 3}
+      propertyPath: _lookRadius
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7012337040204575515, guid: d7c7d6427bb61f54eb4a30edf379e0ef, type: 3}
       propertyPath: holdPosition
       value: 
@@ -3892,10 +3888,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1761582512909290829, guid: d7c7d6427bb61f54eb4a30edf379e0ef, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1940818810}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7c7d6427bb61f54eb4a30edf379e0ef, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
