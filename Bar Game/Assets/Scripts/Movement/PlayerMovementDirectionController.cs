@@ -9,18 +9,18 @@ namespace BarGame.Movement {
         private PlayerControls playerControls;
         private Animator myAnimator;
 
-        private void Awake()
+        protected void Awake()
         {
             myAnimator = GetComponent<Animator>();
             playerControls = new PlayerControls ();
         }
 
-        private void OnEnable()
+        protected void OnEnable()
         {
             playerControls.Enable();
         }
 
-        private void Update()
+        protected void Update()
         {
             PlayerInput();
         }

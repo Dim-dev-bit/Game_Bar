@@ -13,7 +13,7 @@ namespace BarGame {
         private float _lookRadius = 1f;
 
 
-        void Update()
+        protected void Update()
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
@@ -35,7 +35,7 @@ namespace BarGame {
         {
             GameObject pickUp = null;
 
-            var position = transform.position;
+            var position = holdPoint.transform.position;
             var radius = _lookRadius;
             var mask = LayerUtils.PickUpLayer;
 
