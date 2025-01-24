@@ -6,6 +6,9 @@ TagManager:
   tags:
   - PickUp
   - Busy
+  - Shaker
+  - Bottle
+  - Spoon
   layers:
   - Default
   - TransparentFX
@@ -17,7 +20,7 @@ TagManager:
   - pickUp
   - freeChair
   - busyChair
-  - 
+  - table
   - 
   - 
   - 

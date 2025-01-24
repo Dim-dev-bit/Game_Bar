@@ -8,7 +8,7 @@ namespace BarGame.Movement {
         [SerializeField] 
         private float moveSpeed = 4f;
         public Vector2 MovementDirection { get; set; }
-        private SpriteRenderer mySpriteRenderer;
+        public SpriteRenderer mySpriteRenderer;
         private Rigidbody2D rb;
 
         protected void Awake()
@@ -30,18 +30,15 @@ namespace BarGame.Movement {
 
         private void AdjustPlayerFacingDirection()
         {
-            Vector3 mousePos = Input.mousePosition;
-            Vector3 playerScreenPoint = Camera.main.WorldToScreenPoint(transform.position);
-
-            if (mousePos.x < playerScreenPoint.x)
+            if (MovementDirection.x < 0)
             {
                 mySpriteRenderer.flipX = true;
-                holdPosition.transform.localPosition = new Vector3(-0.5f, 0, 0);
+                holdPosition.transform.localPosition = new Vector3(-0.5f, 0.25f, 0);
             }
-            else
+            else if (MovementDirection.x > 0)
             {
                 mySpriteRenderer.flipX = false;
-                holdPosition.transform.localPosition = new Vector3(0.5f, 0, 0);
+                holdPosition.transform.localPosition = new Vector3(0.5f, 0.25f, 0);
             }
         }
     }

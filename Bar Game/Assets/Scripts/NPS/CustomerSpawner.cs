@@ -19,7 +19,6 @@ namespace BarGame.NPS {
                 Instantiate(_nps, transform);
                 _timeInSecTillNextNPS = _maxTimeInSecInterval;
             }
-            Debug.Log(_timeInSecTillNextNPS);
         }
     }
 }
