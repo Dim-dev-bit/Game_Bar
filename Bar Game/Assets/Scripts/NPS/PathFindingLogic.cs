@@ -41,10 +41,10 @@ namespace BarGame.NPS {
             {
                 for (int i = 0; i < size; i++)
                 {
-                    if (_colliders[i].gameObject != gameObject && _colliders[i].gameObject.layer != LayerUtils.BusyChairLayer)
+                    if (_colliders[i].gameObject != gameObject && _colliders[i].gameObject.layer != LayerUtils.BusyChairLayerNum)
                     {
                         target = _colliders[i].gameObject;
-                        target.layer = LayerUtils.BusyChairLayer;
+                        target.layer = LayerUtils.BusyChairLayerNum;
                         break;
                     }
                 }

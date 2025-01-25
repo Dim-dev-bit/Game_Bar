@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3527639164586687642}
   m_Layer: 7
   m_Name: Mesh
-  m_TagString: Untagged
+  m_TagString: Spoon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

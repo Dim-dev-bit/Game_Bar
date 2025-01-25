@@ -7,7 +7,7 @@ namespace BarGame.Furniture {
         [SerializeField]
         public Transform[] Positions;
 
-        private Vector2 _size = new Vector2(0.3f, 0.3f);
+        private Vector2 _size = new Vector2(0, 0);
 
 
         public void OnTriggerEnter2D(Collider2D other)
@@ -36,6 +36,8 @@ namespace BarGame.Furniture {
             int positionIndex = -1;
             for (int i = 0; i < Positions.Length; i++)
             {
+                Debug.Log(Positions.Length);
+                Debug.Log(Positions[i]);
                 Collider2D[] _coll = Physics2D.OverlapBoxAll(Positions[i].position, _size, 0f, LayerUtils.PickUpLayer);
                 if (_coll.Length == 0 )
                 {

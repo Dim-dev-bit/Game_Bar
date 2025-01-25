@@ -32,17 +32,22 @@ namespace BarGame {
                     _pickUp = GetPickUp();
                     if (_pickUp != null)
                     {
+                        _pickUp.layer = LayerUtils.PickedUpLayerNum;
+
                         _tag = _pickUp.tag;
                         IsHold = true;
                     }
                 }
-                else if (_tag == "Bottle")
+                else if (_tag == "Bottle" || _tag == "Shaker" || _tag == "Spoon")
                 {
                     if (table != null)
                     {
                         bool placed = table.PlaceItem(_pickUp);
                         if (placed)
+                        {
+                            _pickUp.layer = LayerUtils.PickUpLayerNum;
                             IsHold = false;
+                        }
                     }
                 }
             }
@@ -73,8 +78,7 @@ namespace BarGame {
                 pickUp = _hit1.collider.gameObject;
             if (_hit2.collider != null)
                 pickUp = _hit2.collider.gameObject;
-            Debug.Log(pickUp);
             return pickUp;
-        }        
+        }
     }
 }

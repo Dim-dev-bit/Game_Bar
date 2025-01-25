@@ -7,8 +7,11 @@ namespace BarGame {
         public const string FreeChairLayerName = "freeChair";
         public const string BusyChairLayerName = "busyChair";
         public const string TableLayerName = "table";
+        public const string PickedUpLayerName = "pickedUp";
 
-        public const int BusyChairLayer = 9;
+        public const int BusyChairLayerNum = 9;
+        public const int PickUpLayerNum = 7;
+        public const int PickedUpLayerNum = 11;
 
         public static readonly int PlayerLayer = LayerMask.GetMask(PlayerLayerName);
         public static readonly int PickUpLayer = LayerMask.GetMask(PickUpLayerName);
