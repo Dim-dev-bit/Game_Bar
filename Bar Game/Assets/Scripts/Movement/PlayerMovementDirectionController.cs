@@ -8,11 +8,15 @@ namespace BarGame.Movement {
 
         private PlayerControls playerControls;
         private Animator myAnimator;
+        private ObjectHold _objectHold;
 
         protected void Awake()
         {
             myAnimator = GetComponent<Animator>();
             playerControls = new PlayerControls ();
+            _objectHold = GetComponent<ObjectHold>();
+            _objectHold.canMove = true;
+
         }
 
         protected void OnEnable()
@@ -26,6 +30,7 @@ namespace BarGame.Movement {
         }
         private void PlayerInput()
         {
+            if (!_objectHold.canMove) return;
             MovementDirection = playerControls.Player.Move.ReadValue<Vector2>();
 
             myAnimator.SetFloat("moveX", MovementDirection.x);

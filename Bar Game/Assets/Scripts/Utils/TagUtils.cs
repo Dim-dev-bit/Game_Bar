@@ -8,6 +8,10 @@ namespace BarGame {
         public const string BusyTagName = "Busy";
         public const string PlayerTagName = "Player";
         public const string BottleTagName = "Bottle";
+        public const string ShakerTagName = "Shaker";
+        public const string SpoonTagName = "Spoon";
+
+
 
 
     }

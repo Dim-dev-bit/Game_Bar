@@ -129,7 +129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3071068452861621653}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Shaker
   m_TagString: Shaker
   m_Icon: {fileID: 0}

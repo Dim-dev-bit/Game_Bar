@@ -129,7 +129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9018084109596847590}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Bottle
   m_TagString: Bottle
   m_Icon: {fileID: 0}

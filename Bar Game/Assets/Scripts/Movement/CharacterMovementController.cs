@@ -9,12 +9,16 @@ namespace BarGame.Movement {
         private float moveSpeed = 4f;
         public Vector2 MovementDirection { get; set; }
         public SpriteRenderer mySpriteRenderer;
-        private Rigidbody2D rb;
+        private ObjectHold _objectHold;
+        private Rigidbody2D _rb;
 
         protected void Awake()
         {
-            rb = GetComponent<Rigidbody2D>();
-            mySpriteRenderer = rb.GetComponent<SpriteRenderer>();
+            _rb = GetComponent<Rigidbody2D>();
+            mySpriteRenderer = _rb.GetComponent<SpriteRenderer>();
+            _objectHold = _rb.GetComponent<ObjectHold>();
+            _objectHold.canMove = true;
+
         }
 
         protected void FixedUpdate()
@@ -25,11 +29,13 @@ namespace BarGame.Movement {
 
         private void Move()
         {
-            rb.MovePosition(rb.position + MovementDirection * (moveSpeed * Time.fixedDeltaTime));
+            if (!_objectHold.canMove) return;
+            _rb.MovePosition(_rb.position + MovementDirection * (moveSpeed * Time.fixedDeltaTime));
         }
 
         private void AdjustPlayerFacingDirection()
         {
+            if (!_objectHold.canMove) return;
             if (MovementDirection.x < 0)
             {
                 mySpriteRenderer.flipX = true;
