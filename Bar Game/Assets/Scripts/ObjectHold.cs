@@ -56,7 +56,7 @@ namespace BarGame {
             switch (_currentState)
             {
                 case State.Shaking:
-                    CheckCurrentState();
+                    Shaking();
                     break;
                 case State.Filling:
                     CheckCurrentState();
@@ -75,12 +75,13 @@ namespace BarGame {
         private void CheckCurrentState()
         {
             _nearObject = GetPickUp();
-            if (_nearObject != null) {
+            if (_nearObject != null)
+            {
                 if (_currentState == State.Basic && IsHold && _pickUp.CompareTag(TagUtils.SpoonTagName) && _nearObject.CompareTag(TagUtils.ShakerTagName) && Input.GetKeyDown(KeyCode.F))
-                {
                     _currentState = State.Stirring;
-                }
             }
+            if (_currentState == State.Basic && IsHold && _pickUp.CompareTag(TagUtils.ShakerTagName) && Input.GetKeyDown(KeyCode.G))
+                _currentState = State.Shaking;
         }
 
         private GameObject GetPickUp()
@@ -158,13 +159,36 @@ namespace BarGame {
                 }
             }
         }
+
+        private void Shaking()
+        {
+            canMove = false;
+            if (Input.anyKeyDown)
+            {
+                foreach (KeyCode key in System.Enum.GetValues(typeof(KeyCode)))
+                {
+                    if (Input.GetKeyDown(key))
+                    {
+                        playerInput.Add(key);
+                        Debug.Log($"Pressed: {key}");
+
+                        if (playerInput.Count > Combinations.shakingSequence.Count)
+                        {
+                            playerInput.RemoveAt(0);
+                        }
+
+                        CheckSequence(Combinations.shakingSequence);
+                    }
+                }
+            }
+        }
         private void CheckSequence(List<KeyCode> sequence)
         {
             if (playerInput.Count == sequence.Count)
             {
                 bool isMatch = true;
                 for (int i = 0; i < playerInput.Count; i++)
-                    if (playerInput[i] !=sequence[i]) {
+                    if (playerInput[i] != sequence[i]) {
                         isMatch = false;
                         break;
                     }
