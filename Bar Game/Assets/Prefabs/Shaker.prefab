@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1312565792436003180}
   - component: {fileID: 611122338466219607}
-  - component: {fileID: 5522367393705618735}
+  - component: {fileID: 7306549822171993365}
+  - component: {fileID: 2207546214652321552}
   m_Layer: 7
   m_Name: Mesh
   m_TagString: Shaker
@@ -85,7 +86,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!70 &5522367393705618735
+--- !u!70 &7306549822171993365
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -114,12 +115,25 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.022889772, y: -0.16022125}
-  m_Size: {x: 0.57056105, y: 0.6795573}
-  m_Direction: 0
+  m_Offset: {x: 0.018596992, y: -0.14396657}
+  m_Size: {x: 1.1341561, y: 0.8764901}
+  m_Direction: 1
+--- !u!114 &2207546214652321552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 466289048558108448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 141c91210159f2f4c83c3680661942f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  newSprite: {fileID: 4923879129353519662, guid: 498d6c33c89360e43b56b0934609c613, type: 3}
 --- !u!1 &757513122783690282
 GameObject:
   m_ObjectHideFlags: 0
@@ -131,7 +145,7 @@ GameObject:
   - component: {fileID: 3071068452861621653}
   m_Layer: 0
   m_Name: Shaker
-  m_TagString: Shaker
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

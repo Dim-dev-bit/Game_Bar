@@ -1,4 +1,5 @@
 using BarGame.Furniture;
+using BarGame.Items;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +10,10 @@ namespace BarGame {
 
         public Transform holdPoint;
         public SpriteRenderer mySpriteRenderer;
+
         public Table table;
+        public Shaker shaker;
+        public Glass glass;
 
         [SerializeField]
         private State _startingState;
@@ -32,9 +36,7 @@ namespace BarGame {
             Shaking,
             Stirring
         }
-
-
-
+        
         protected void Awake()
         {
             mySpriteRenderer = GetComponent<SpriteRenderer>();
@@ -46,10 +48,18 @@ namespace BarGame {
             StateHandler();
         }
 
-        public void SetCurrentTable(Table otherTable)
-        {
+        public void SetCurrentTable(Table otherTable) {
             table = otherTable;
         }
+
+        public void SetCurrentShaker(Shaker otherShaker) {
+            shaker = otherShaker;
+        }
+
+        public void SetCurrentGlass(Glass otherGlass) {
+            glass = otherGlass;
+        }
+
 
         private void StateHandler()
         {
@@ -77,7 +87,7 @@ namespace BarGame {
             _nearObject = GetPickUp();
             if (_nearObject != null)
             {
-                if (_currentState == State.Basic && IsHold && _pickUp.CompareTag(TagUtils.SpoonTagName) && _nearObject.CompareTag(TagUtils.ShakerTagName) && Input.GetKeyDown(KeyCode.F))
+                if (_currentState == State.Basic && IsHold && _pickUp.CompareTag(TagUtils.SpoonTagName) && _nearObject.CompareTag(TagUtils.GlassTagName) && Input.GetKeyDown(KeyCode.F))
                     _currentState = State.Stirring;
             }
             if (_currentState == State.Basic && IsHold && _pickUp.CompareTag(TagUtils.ShakerTagName) && Input.GetKeyDown(KeyCode.G))
@@ -118,7 +128,7 @@ namespace BarGame {
                         IsHold = true;
                     }
                 }
-                else if (_tag == TagUtils.BottleTagName || _tag == TagUtils.ShakerTagName || _tag == TagUtils.SpoonTagName)
+                else if (_tag == TagUtils.BottleTagName || _tag == TagUtils.ShakerTagName || _tag == TagUtils.SpoonTagName || _tag == TagUtils.GlassTagName)
                 {
                     if (table != null)
                     {
@@ -169,11 +179,14 @@ namespace BarGame {
                     }
 
                 if (isMatch) {
-                    Debug.Log("Cool");
+                    if (shaker != null)
+                        shaker.ChangeSprite();
+                    else if (glass != null)
+                        glass.ChangeSprite();
+                    Debug.Log("Done!");
                     playerInput.Clear();
                     _currentState = State.Basic;
                     canMove = true;
-
                 }
 
             }

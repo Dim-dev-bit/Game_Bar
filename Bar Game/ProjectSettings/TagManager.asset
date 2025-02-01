@@ -9,6 +9,7 @@ TagManager:
   - Shaker
   - Bottle
   - Spoon
+  - Glass
   layers:
   - Default
   - TransparentFX

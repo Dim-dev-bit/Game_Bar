@@ -15,8 +15,7 @@ namespace BarGame.Furniture {
             if (other.CompareTag(TagUtils.PlayerTagName))
             {
                 PlayerCharacter player = other.GetComponent<PlayerCharacter>();
-                if (player != null)
-                {
+                if (player != null) {
                     player.objectHold.SetCurrentTable(this);
                 }
             }
