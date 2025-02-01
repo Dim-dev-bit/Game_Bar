@@ -56,13 +56,13 @@ namespace BarGame {
             switch (_currentState)
             {
                 case State.Shaking:
-                    Shaking();
+                    Action(Combinations.shakingSequence);
                     break;
                 case State.Filling:
                     CheckCurrentState();
                     break;
                 case State.Stirring:
-                    Stirring();
+                    Action(Combinations.stirringSequence);
                     break;
                 default:
                 case State.Basic:
@@ -137,7 +137,7 @@ namespace BarGame {
 
         }
 
-        private void Stirring()
+        private void Action(List<KeyCode> sequence)
         {
             canMove = false;
             if (Input.anyKeyDown)
@@ -149,35 +149,10 @@ namespace BarGame {
                         playerInput.Add(key);
                         Debug.Log($"Pressed: {key}");
 
-                        if (playerInput.Count > Combinations.stirringSequence.Count)
-                        {
+                        if (playerInput.Count > sequence.Count)
                             playerInput.RemoveAt(0);
-                        }
 
-                        CheckSequence(Combinations.stirringSequence);
-                    }
-                }
-            }
-        }
-
-        private void Shaking()
-        {
-            canMove = false;
-            if (Input.anyKeyDown)
-            {
-                foreach (KeyCode key in System.Enum.GetValues(typeof(KeyCode)))
-                {
-                    if (Input.GetKeyDown(key))
-                    {
-                        playerInput.Add(key);
-                        Debug.Log($"Pressed: {key}");
-
-                        if (playerInput.Count > Combinations.shakingSequence.Count)
-                        {
-                            playerInput.RemoveAt(0);
-                        }
-
-                        CheckSequence(Combinations.shakingSequence);
+                        CheckSequence(sequence);
                     }
                 }
             }
@@ -193,8 +168,7 @@ namespace BarGame {
                         break;
                     }
 
-                if (isMatch)
-                {
+                if (isMatch) {
                     Debug.Log("Cool");
                     playerInput.Clear();
                     _currentState = State.Basic;
