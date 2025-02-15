@@ -44,7 +44,6 @@ namespace BarGame.Furniture {
                     break;
                 }
             }
-            Debug.Log(positionIndex);
             if (positionIndex < 0 || positionIndex >= Positions.Length)
             {
                 return false;

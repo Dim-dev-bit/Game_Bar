@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace BarGame {
-    public class ObjectHold : MonoBehaviour {
+    public class InteractionWithObjects : MonoBehaviour {
         public bool IsHold;
         public bool canMove;
 
@@ -26,6 +26,10 @@ namespace BarGame {
         private RaycastHit2D _hit2;
         private string _tag;
         private State _currentState;
+
+        private float _timerInSec = 0f;
+        private float _timerMax = 3f;
+        private bool _isPouring = false;
 
         private List<KeyCode> playerInput = new List<KeyCode>();
 
@@ -69,6 +73,7 @@ namespace BarGame {
                     Action(Combinations.shakingSequence);
                     break;
                 case State.Filling:
+                    Filling();
                     CheckCurrentState();
                     break;
                 case State.Stirring:
@@ -89,6 +94,8 @@ namespace BarGame {
             {
                 if (_currentState == State.Basic && IsHold && _pickUp.CompareTag(TagUtils.SpoonTagName) && _nearObject.CompareTag(TagUtils.GlassTagName) && Input.GetKeyDown(KeyCode.F))
                     _currentState = State.Stirring;
+                else if (_currentState == State.Basic && IsHold && _pickUp.CompareTag(TagUtils.BottleTagName) && _nearObject.CompareTag(TagUtils.GlassTagName) && Input.GetKeyDown(KeyCode.H))
+                    _currentState = State.Filling;
             }
             if (_currentState == State.Basic && IsHold && _pickUp.CompareTag(TagUtils.ShakerTagName) && Input.GetKeyDown(KeyCode.G))
                 _currentState = State.Shaking;
@@ -128,7 +135,7 @@ namespace BarGame {
                         IsHold = true;
                     }
                 }
-                else if (_tag == TagUtils.BottleTagName || _tag == TagUtils.ShakerTagName || _tag == TagUtils.SpoonTagName || _tag == TagUtils.GlassTagName)
+                else if (_tag == TagUtils.BottleTagName || _tag == TagUtils.ShakerTagName || _tag == TagUtils.SpoonTagName || _tag == TagUtils.GlassTagName) // add list instead of this horror...
                 {
                     if (table != null)
                     {
@@ -165,6 +172,32 @@ namespace BarGame {
                         CheckSequence(sequence);
                     }
                 }
+            }
+        }
+        private void Filling()
+        {
+            if (Input.GetKey(KeyCode.H)) {
+                if (!_isPouring)
+                {
+                    _isPouring = true;
+                    _timerInSec = 0;
+                }
+                Debug.Log(_timerInSec);
+                _timerInSec += Time.deltaTime;
+                if (_timerInSec >= _timerMax)
+                {
+                    Debug.Log("Poured!");
+                    _timerInSec = 0;
+                    _isPouring = false;
+                    glass.ChangeSprite();
+                    _currentState = State.Basic;
+                }
+            }
+            else
+            {
+                _isPouring = false;
+                _timerInSec = 0;
+                _currentState = State.Basic;
             }
         }
         private void CheckSequence(List<KeyCode> sequence)

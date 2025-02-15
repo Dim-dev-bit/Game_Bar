@@ -9,14 +9,14 @@ namespace BarGame.Movement {
         private float moveSpeed = 4f;
         public Vector2 MovementDirection { get; set; }
         public SpriteRenderer mySpriteRenderer;
-        private ObjectHold _objectHold;
+        private InteractionWithObjects _objectHold;
         private Rigidbody2D _rb;
 
         protected void Awake()
         {
             _rb = GetComponent<Rigidbody2D>();
             mySpriteRenderer = _rb.GetComponent<SpriteRenderer>();
-            _objectHold = _rb.GetComponent<ObjectHold>();
+            _objectHold = _rb.GetComponent<InteractionWithObjects>();
             _objectHold.canMove = true;
 
         }

@@ -2,9 +2,9 @@
 using UnityEngine;
 
 namespace BarGame.Player {
-    [RequireComponent(typeof(CharacterMovementController), typeof(ObjectHold))]
+    [RequireComponent(typeof(CharacterMovementController), typeof(InteractionWithObjects))]
     public class PlayerCharacter : MonoBehaviour {
-        public ObjectHold objectHold;
+        public InteractionWithObjects objectHold;
 
         private  CharacterMovementController _characterMovementController;
         private IMovementDirectionSource _movementDirectionSource;
@@ -15,7 +15,7 @@ namespace BarGame.Player {
             _characterMovementController = GetComponent<CharacterMovementController>();
 
             if (objectHold == null)
-                objectHold = GetComponent<ObjectHold>();
+                objectHold = GetComponent<InteractionWithObjects>();
         }
 
         protected void Update()

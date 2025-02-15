@@ -8,13 +8,13 @@ namespace BarGame.Movement {
 
         private PlayerControls playerControls;
         private Animator myAnimator;
-        private ObjectHold _objectHold;
+        private InteractionWithObjects _objectHold;
 
         protected void Awake()
         {
             myAnimator = GetComponent<Animator>();
             playerControls = new PlayerControls ();
-            _objectHold = GetComponent<ObjectHold>();
+            _objectHold = GetComponent<InteractionWithObjects>();
             _objectHold.canMove = true;
 
         }
