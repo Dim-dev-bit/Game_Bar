@@ -1,10 +1,13 @@
 ﻿using BarGame.Movement;
+using BarGame.Player.Interactions;
 using UnityEngine;
 
 namespace BarGame.Player {
     [RequireComponent(typeof(CharacterMovementController), typeof(InteractionWithObjects))]
     public class PlayerCharacter : MonoBehaviour {
-        public InteractionWithObjects objectHold;
+        public InteractionWithObjects InteractionWithObjects;
+        public PickUpHandler PickUpHandler;
+        public ActionHandler ActionHandler;
 
         private  CharacterMovementController _characterMovementController;
         private IMovementDirectionSource _movementDirectionSource;
@@ -14,8 +17,12 @@ namespace BarGame.Player {
             _movementDirectionSource = GetComponent<IMovementDirectionSource>();
             _characterMovementController = GetComponent<CharacterMovementController>();
 
-            if (objectHold == null)
-                objectHold = GetComponent<InteractionWithObjects>();
+            if (InteractionWithObjects == null)
+                InteractionWithObjects = GetComponent<InteractionWithObjects>();
+            if (PickUpHandler == null)
+                PickUpHandler = GetComponent<PickUpHandler>();
+            if (ActionHandler == null) 
+                ActionHandler = GetComponent<ActionHandler>();
         }
 
         protected void Update()

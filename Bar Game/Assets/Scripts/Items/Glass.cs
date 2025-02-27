@@ -1,4 +1,5 @@
 ﻿using BarGame.Player;
+using BarGame.Player.Interactions;
 using UnityEngine;
 
 namespace BarGame.Items {
@@ -7,13 +8,24 @@ namespace BarGame.Items {
         public Sprite newSprite;
 
         private SpriteRenderer _spriteRenderer;
+        private enum Actions
+        {
+            Filling,
+            Shaking,
+            Stirring
+        };
 
+
+        private void OnEnable()
+        {
+            ActionHandler.OnCompletingAction += DoStuff;
+        }
         public void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag(TagUtils.PlayerTagName)) { 
                 PlayerCharacter player = other.GetComponent<PlayerCharacter>();
                 if (player != null) { 
-                    player.objectHold.SetCurrentGlass(this);
+                    player.ActionHandler.SetCurrentGlass(this);
                 }
             }
         }
@@ -23,7 +35,7 @@ namespace BarGame.Items {
             {
                 PlayerCharacter player = other.GetComponent<PlayerCharacter>();
                 if (player != null)
-                    player.objectHold.SetCurrentGlass(null);
+                    player.ActionHandler.SetCurrentGlass(null);
             }
         }
         protected void Start()
@@ -34,6 +46,11 @@ namespace BarGame.Items {
         public void ChangeSprite()
         {
             _spriteRenderer.sprite = newSprite;
+        }
+
+        public void DoStuff() {
+
+            Debug.Log("Stuff");
         }
     }
 }

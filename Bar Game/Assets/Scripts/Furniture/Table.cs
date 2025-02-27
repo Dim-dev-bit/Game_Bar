@@ -16,7 +16,7 @@ namespace BarGame.Furniture {
             {
                 PlayerCharacter player = other.GetComponent<PlayerCharacter>();
                 if (player != null) {
-                    player.objectHold.SetCurrentTable(this);
+                    player.PickUpHandler.SetCurrentTable(this);
                 }
             }
         }
@@ -27,7 +27,7 @@ namespace BarGame.Furniture {
             {
                 PlayerCharacter player = other.GetComponent<PlayerCharacter>();
                 if (player != null)
-                    player.objectHold.SetCurrentTable(null);
+                    player.PickUpHandler.SetCurrentTable(null);
             }
         }
         public bool PlaceItem(GameObject item)

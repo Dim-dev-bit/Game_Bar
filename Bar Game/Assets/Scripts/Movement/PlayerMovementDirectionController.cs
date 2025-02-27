@@ -1,3 +1,4 @@
+using BarGame.Player.Interactions;
 using UnityEngine;
 
 namespace BarGame.Movement {
@@ -8,14 +9,14 @@ namespace BarGame.Movement {
 
         private PlayerControls playerControls;
         private Animator myAnimator;
-        private InteractionWithObjects _objectHold;
+        private ActionHandler _actionHandler;
 
         protected void Awake()
         {
             myAnimator = GetComponent<Animator>();
             playerControls = new PlayerControls ();
-            _objectHold = GetComponent<InteractionWithObjects>();
-            _objectHold.canMove = true;
+            _actionHandler = GetComponent<ActionHandler>();
+            _actionHandler.canMove = true;
 
         }
 
@@ -30,7 +31,7 @@ namespace BarGame.Movement {
         }
         private void PlayerInput()
         {
-            if (!_objectHold.canMove) return;
+            if (!_actionHandler.canMove) return;
             MovementDirection = playerControls.Player.Move.ReadValue<Vector2>();
 
             myAnimator.SetFloat("moveX", MovementDirection.x);
