@@ -6,6 +6,8 @@ using UnityEngine;
 namespace BarGame.Player.Interactions {
     public class ActionHandler : MonoBehaviour {
         public bool canMove = true;
+        public ProgressBarController progressBarController;
+
         public static event Action OnCompletingAction;
 
         private StateHandler _stateHandler;
@@ -65,27 +67,26 @@ namespace BarGame.Player.Interactions {
                 if (!_isPouring)
                 {
                     _isPouring = true;
+                    canMove = false;
+  
                     _timerInSec = 0;
+                    progressBarController.StartProgress(_timerMax);
+
                 }
-                Debug.Log(_timerInSec);
                 _timerInSec += Time.deltaTime;
                 if (_timerInSec >= _timerMax)
                 {
                     Debug.Log("Poured!");
                     _timerInSec = 0;
                     _isPouring = false;
-                    glass.ChangeSprite();
+                    canMove = true;
+                    if (glass != null)
+                        glass.ChangeSprite();
 
                     OnCompletingAction?.Invoke();
 
                     _stateHandler.SetState(StateHandler.State.Basic);
                 }
-            }
-            else
-            {
-                _isPouring = false;
-                _timerInSec = 0;
-                _stateHandler.SetState(StateHandler.State.Basic);
             }
         }
         private void CheckSequence(List<KeyCode> sequence)

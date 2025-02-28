@@ -31,7 +31,12 @@ namespace BarGame.Movement {
         }
         private void PlayerInput()
         {
-            if (!_actionHandler.canMove) return;
+            if (!_actionHandler.canMove)
+            {
+                myAnimator.SetFloat("moveX", 0f);
+                myAnimator.SetFloat("moveY", 0f);
+                return;
+            }
             MovementDirection = playerControls.Player.Move.ReadValue<Vector2>();
 
             myAnimator.SetFloat("moveX", MovementDirection.x);

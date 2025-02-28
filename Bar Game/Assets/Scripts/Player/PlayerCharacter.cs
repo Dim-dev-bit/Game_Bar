@@ -23,6 +23,8 @@ namespace BarGame.Player {
                 PickUpHandler = GetComponent<PickUpHandler>();
             if (ActionHandler == null) 
                 ActionHandler = GetComponent<ActionHandler>();
+
+
         }
 
         protected void Update()
