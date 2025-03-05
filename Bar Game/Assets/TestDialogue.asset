@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TestDialogue
   m_EditorClassIdentifier: 
   dialogueLines:
-  - dialogue: 0
+  - dialogue: Hi
   - dialogue: Hi
   - dialogue: I'd like one green bottle, please!
   - dialogue: I'd like one coctail with apple juice, please!

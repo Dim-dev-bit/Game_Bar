@@ -46,6 +46,7 @@ namespace BarGame.Items {
         public void ChangeSprite()
         {
             _spriteRenderer.sprite = newSprite;
+            //this.gameObject.layer = LayerUtils.
         }
 
         public void DoStuff() {
