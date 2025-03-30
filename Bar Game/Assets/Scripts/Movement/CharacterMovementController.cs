@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using BarGame.Player.Interactions;
+using UnityEngine;
 
 namespace BarGame.Movement {
     [RequireComponent (typeof(Rigidbody2D))]
@@ -9,15 +10,15 @@ namespace BarGame.Movement {
         private float moveSpeed = 4f;
         public Vector2 MovementDirection { get; set; }
         public SpriteRenderer mySpriteRenderer;
-        private ObjectHold _objectHold;
+        private ActionHandler _actionHandler;
         private Rigidbody2D _rb;
 
         protected void Awake()
         {
             _rb = GetComponent<Rigidbody2D>();
             mySpriteRenderer = _rb.GetComponent<SpriteRenderer>();
-            _objectHold = _rb.GetComponent<ObjectHold>();
-            _objectHold.canMove = true;
+            _actionHandler = _rb.GetComponent<ActionHandler>();
+            _actionHandler.canMove = true;
 
         }
 
@@ -29,13 +30,13 @@ namespace BarGame.Movement {
 
         private void Move()
         {
-            if (!_objectHold.canMove) return;
+            if (!_actionHandler.canMove) return;
             _rb.MovePosition(_rb.position + MovementDirection * (moveSpeed * Time.fixedDeltaTime));
         }
 
         private void AdjustPlayerFacingDirection()
         {
-            if (!_objectHold.canMove) return;
+            if (!_actionHandler.canMove) return;
             if (MovementDirection.x < 0)
             {
                 mySpriteRenderer.flipX = true;

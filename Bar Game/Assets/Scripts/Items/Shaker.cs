@@ -13,7 +13,7 @@ namespace BarGame.Items {
             {
                 PlayerCharacter player = other.GetComponent<PlayerCharacter>();
                 if (player != null)
-                    player.objectHold.SetCurrentShaker(this);
+                    player.ActionHandler.SetCurrentShaker(this);
             }
         }
         public void OnTriggerExit2D(Collider2D other)
@@ -22,7 +22,7 @@ namespace BarGame.Items {
             {
                 PlayerCharacter player = other.GetComponent<PlayerCharacter>();
                 if (player != null)
-                    player.objectHold.SetCurrentShaker(null);
+                    player.ActionHandler.SetCurrentShaker(null);
             }
         }
         protected void Start()
@@ -35,6 +35,5 @@ namespace BarGame.Items {
             _spriteRenderer.sprite = newSprite;
         }
 
-        // Пока на стадии разработки...
     }
 }
