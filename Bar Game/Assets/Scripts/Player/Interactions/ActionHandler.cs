@@ -1,6 +1,7 @@
 ﻿using BarGame.Items;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace BarGame.Player.Interactions {
@@ -62,7 +63,9 @@ namespace BarGame.Player.Interactions {
         }
         public void Filling()
         {
-            if (Input.GetKey(KeyCode.H))
+            if (shaker == null)
+                _stateHandler.SetState(StateHandler.State.Basic);
+            else if (Input.GetKey(KeyCode.H))
             {
                 if (!_isPouring)
                 {
@@ -80,9 +83,12 @@ namespace BarGame.Player.Interactions {
                     _timerInSec = 0;
                     _isPouring = false;
                     canMove = true;
-                    if (glass != null)
-                        glass.ChangeSprite();
 
+                    // Adding things to lists
+                    if (_stateHandler.CurrentFillingObject == "Glass")
+                        shaker.AddToGlass(glass.RecipeToMatch);
+                    else if (_stateHandler.CurrentFillingObject == "Shaker")
+                        shaker.ShakingActions.Add(_stateHandler.CurrentAction);
                     OnCompletingAction?.Invoke();
 
                     _stateHandler.SetState(StateHandler.State.Basic);
@@ -103,10 +109,18 @@ namespace BarGame.Player.Interactions {
 
                 if (isMatch)
                 {
-                    if (shaker != null)
+                    if (shaker != null && _stateHandler.IsState(StateHandler.State.Shaking))
+                    {
                         shaker.ChangeSprite();
-                    else if (glass != null)
+                        shaker.ShakingActions.Add(_stateHandler.CurrentAction); // adding everything from shaker to the glass
+                    }
+                    if (glass != null && _stateHandler.IsState(StateHandler.State.Stirring))
+                    {
                         glass.ChangeSprite();
+                        // Adding action to the list of this particular glass
+                        glass.RecipeToMatch.Add(_stateHandler.CurrentAction);
+                    }
+
                     Debug.Log("Done!");
 
                     OnCompletingAction?.Invoke();

@@ -4,12 +4,16 @@ namespace BarGame.NPS {
     public class PathFindingLogic : MonoBehaviour {
         [SerializeField]
         public bool IsStopped = false;
+        public Transform _exit;
+
 
         private float _lookRadius = 100f;
 
         private GameObject _target;
         private NavMeshAgent _agent;
         private Collider2D[] _colliders = new Collider2D[2];
+
+
 
         private float eps = 0.5f;
 
@@ -36,6 +40,18 @@ namespace BarGame.NPS {
                     IsStopped = true;
                 }
             }   
+        }
+
+        public void ExitingBar(bool matched)
+        {
+            if (_exit != null)
+            {
+                _agent.SetDestination(_exit.position);
+                if (Vector2.Distance(_agent.transform.position, _exit.position) < eps)
+                {
+                    Destroy(gameObject);
+                }
+            }
         }
 
 

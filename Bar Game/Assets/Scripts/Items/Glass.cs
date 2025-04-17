@@ -1,11 +1,14 @@
 ﻿using BarGame.Player;
 using BarGame.Player.Interactions;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BarGame.Items {
     public class Glass : MonoBehaviour {
 
         public Sprite newSprite;
+
+        [SerializeField]public List<string> RecipeToMatch; 
 
         private SpriteRenderer _spriteRenderer;
         private enum Actions

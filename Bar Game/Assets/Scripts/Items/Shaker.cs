@@ -1,9 +1,12 @@
 ﻿using BarGame.Player;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BarGame.Items {
     public class Shaker : MonoBehaviour {
         public Sprite newSprite;
+
+        public List<string> ShakingActions;
 
         private SpriteRenderer _spriteRenderer;
 
@@ -33,6 +36,17 @@ namespace BarGame.Items {
         public void ChangeSprite()
         {
             _spriteRenderer.sprite = newSprite;
+        }
+
+        public void AddToGlass(List<string> glassList)
+        {
+            glassList.Add("shaking");
+            foreach (string action in ShakingActions)
+            {
+                glassList.Add(action);
+            }
+
+            ShakingActions.Clear();
         }
 
     }

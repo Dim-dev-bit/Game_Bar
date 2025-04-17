@@ -1,11 +1,11 @@
-﻿using System.Collections;
+﻿using BarGame.NPS;
 using UnityEngine;
 
 namespace BarGame.UI {
     public class MovingDialogueBox : MonoBehaviour {
 
         private Transform _customer; // Ссылка на объект посетителя
-        public Vector3 offset; // Смещение для позиционирования облака
+        private Transform _child;
 
         private RectTransform rectTransform;
 
@@ -17,18 +17,14 @@ namespace BarGame.UI {
         public void SetCustomer(Transform customer)
         {
             _customer = customer;
+            _child = _customer.GetChild(0);
         }
 
         protected void Update()
         {
-            if (_customer != null)
-            {
-                Vector3 screenPosition = Camera.main.WorldToScreenPoint(_customer.position);
-
-                rectTransform.position = screenPosition + offset;
-            }
+            if (_customer != null && _child != null)
+                // This Camera.main.WorldToScreenPoint is necessary for converting coords in real world to canvas coords
+                rectTransform.position = Camera.main.WorldToScreenPoint(_child.position);
         }
-
-
     }
 }

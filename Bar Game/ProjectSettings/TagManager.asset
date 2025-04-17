@@ -10,6 +10,8 @@ TagManager:
   - Bottle
   - Spoon
   - Glass
+  - Ice
+  - Wine
   layers:
   - Default
   - TransparentFX

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea19f792569085a4fbee706af1750bf9, type: 3}
-  m_Name: TestDialogue
+  m_Name: GreetDialogue
   m_EditorClassIdentifier: 
   dialogueLines:
   - dialogue: Hi
   - dialogue: Hi
-  - dialogue: I'd like one green bottle, please!
-  - dialogue: I'd like one coctail with apple juice, please!
+  - dialogue: I'd like one valera, please!
+  - dialogue: I'd like one lemonade, please!
   - dialogue: Thank you

@@ -5,6 +5,7 @@ namespace BarGame.NPS {
 
     public class CustomerCharacter : MonoBehaviour {
         private CustomerStateHandler _stateHandler;
+        public Transform dialogPosition;
 
 
         protected void Awake()
@@ -15,5 +16,6 @@ namespace BarGame.NPS {
         protected void Update() { 
             _stateHandler.HandleState();
         }
+
     }
 }

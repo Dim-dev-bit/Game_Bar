@@ -35,8 +35,6 @@ namespace BarGame.Furniture {
             int positionIndex = -1;
             for (int i = 0; i < Positions.Length; i++)
             {
-                Debug.Log(Positions.Length);
-                Debug.Log(Positions[i]);
                 Collider2D[] _coll = Physics2D.OverlapBoxAll(Positions[i].position, _size, 0f, LayerUtils.PickUpLayer);
                 if (_coll.Length == 0 )
                 {

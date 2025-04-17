@@ -27,7 +27,6 @@ namespace BarGame.Player.Interactions {
             pickUpHandler = GetComponent<PickUpHandler>();
             actionHandler = GetComponent<ActionHandler>();
             stateHandler = GetComponent<StateHandler>();
-            Debug.Log("0");
             pickUpHandler.Initialize(mySpriteRenderer, holdPoint, _lookDistance);
             actionHandler.Initialize(shaker, glass);
 
