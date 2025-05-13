@@ -12,6 +12,7 @@ TagManager:
   - Glass
   - Ice
   - Wine
+  - Customer
   layers:
   - Default
   - TransparentFX

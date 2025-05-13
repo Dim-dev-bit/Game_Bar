@@ -1,15 +1,21 @@
-﻿using System.Collections;
-using TMPro;
+﻿using BarGame.NPS;
+using BarGame.Player;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace BarGame.UI {
     public class DialogueDisplayer : MonoBehaviour {
         [SerializeField] private GameObject dialogueBox;
-        [SerializeField] private TMP_Text dialogueText;
+        [SerializeField] private Image dialogueImage;
         public DialogueObject currentDialogue;
         public bool dialogueStarted = false;
         public bool dialogueFinished;
         public string orderPhrase;
+        private PlayerCharacter _player;
+
+        private int _greetingDialogueLength;
+        private int _leavingDialogueLength = 2;
 
        
         private int _numberOfChoices = 2;
@@ -17,6 +23,11 @@ namespace BarGame.UI {
         protected void Start()
         {
             dialogueBox.SetActive(false);
+            _greetingDialogueLength = currentDialogue.dialogueLines.Length - _leavingDialogueLength;
+        }
+        public void SetPlayer(PlayerCharacter player)
+        {
+            _player = player;
         }
         public void StartingDialogue()
         {
@@ -25,34 +36,54 @@ namespace BarGame.UI {
             dialogueBox.SetActive(true);
             DisplayDialogue(currentDialogue);
         }
+
+        public void EndingPhrase(bool isMatched)
+        {
+            dialogueImage.sprite = isMatched ? currentDialogue.dialogueLines[_greetingDialogueLength + 1].image :
+                 currentDialogue.dialogueLines[_greetingDialogueLength + 0].image;
+        }
         public void DisplayDialogue(DialogueObject dialogueObject)
         {
             StartCoroutine(MoveThroughDialogue(dialogueObject));
         }
         private IEnumerator MoveThroughDialogue(DialogueObject dialogueObject)
         {
-            for (int i = 0; i < dialogueObject.dialogueLines.Length; i++)
+            dialogueImage.sprite = dialogueObject.dialogueLines[0].image;
+            yield return new WaitUntil(() => (Input.GetKeyDown(KeyCode.UpArrow) && _player != null));
+            _player.ActionHandler.canMove = !dialogueStarted;
+            if (_player != null && Input.GetKeyDown(KeyCode.UpArrow))
             {
-                if (i == 2) // This is the last line before variety of drinks  
+                int ind = Random.Range(2, 2 + _numberOfChoices); // One is the num of windows before choice of drinks
+                for (int i = 1; i < _greetingDialogueLength; i++)
                 {
-                    dialogueText.text = dialogueObject.dialogueLines[Random.Range(i, i + _numberOfChoices)].dialogue;
-                    orderPhrase = dialogueText.text;
-                    i += _numberOfChoices - 1;
-                }
-                else
-                {
-                    dialogueText.text = dialogueObject.dialogueLines[i].dialogue;
-                }
-                yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.UpArrow));
+                    Debug.Log("222");
+                    if (i == 2) // This is the last line before variety of drinks  
+                    {
+                        dialogueImage.sprite = dialogueObject.dialogueLines[ind].image;
+                        orderPhrase = dialogueObject.dialogueLines[ind].dialogue;
+                        i += _numberOfChoices - 1;
+                        Debug.Log(i);
+                    }
+                    else
+                    {
+                        Debug.Log(i);
+                        // So that in the end the choice of a customer will be shown
+                        if (i != _greetingDialogueLength - 1)
+                            dialogueImage.sprite = dialogueObject.dialogueLines[i].image;
+                        else
+                            dialogueImage.sprite = dialogueObject.dialogueLines[ind].image;
+                    }
 
-                yield return null;
+                    yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.UpArrow));
+                    yield return null;
+                }
+
+                dialogueStarted = false;
+                dialogueFinished = true;
+                //dialogueBox.SetActive(false);
             }
 
-            dialogueStarted = false;
-            dialogueFinished = true;
-            dialogueBox.SetActive(false);
-           
-
+            _player.ActionHandler.canMove = true;
             yield return null;
         }
     }
