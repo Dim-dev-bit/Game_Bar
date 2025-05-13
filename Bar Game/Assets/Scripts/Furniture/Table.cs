@@ -1,4 +1,5 @@
-﻿using BarGame.Player;
+﻿using BarGame.NPS;
+using BarGame.Player;
 using UnityEngine;
 
 namespace BarGame.Furniture {
@@ -19,6 +20,12 @@ namespace BarGame.Furniture {
                     player.PickUpHandler.SetCurrentTable(this);
                 }
             }
+            if (other.CompareTag(TagUtils.CustomerTagName))
+            {
+                CustomerCharacter customer = other.GetComponent<CustomerCharacter>();
+                if (customer != null)
+                    customer.StateHandler.SetCurrentTable(this);
+            }
         }
 
         public void OnTriggerExit2D(Collider2D other)
@@ -28,6 +35,12 @@ namespace BarGame.Furniture {
                 PlayerCharacter player = other.GetComponent<PlayerCharacter>();
                 if (player != null)
                     player.PickUpHandler.SetCurrentTable(null);
+            }
+            if (other.CompareTag(TagUtils.CustomerTagName))
+            {
+                CustomerCharacter customer = other.GetComponent<CustomerCharacter>();
+                if (customer != null)
+                    customer.StateHandler.SetCurrentTable(null);
             }
         }
         public bool PlaceItem(GameObject item)

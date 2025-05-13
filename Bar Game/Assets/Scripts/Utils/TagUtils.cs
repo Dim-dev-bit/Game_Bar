@@ -12,6 +12,7 @@ namespace BarGame {
         public const string SpoonTagName = "Spoon";
         public const string GlassTagName = "Glass";
         public const string IceTagName = "Ice";
+        public const string CustomerTagName = "Customer";
 
         public static bool IsShaker(GameObject obj) => obj.CompareTag(ShakerTagName);
         public static bool IsGlass(GameObject obj) => obj.CompareTag(GlassTagName);

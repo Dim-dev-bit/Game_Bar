@@ -1,4 +1,5 @@
-﻿using BarGame.Items;
+﻿using BarGame.Furniture;
+using BarGame.Items;
 using BarGame.Player;
 using BarGame.UI;
 using System;
@@ -17,6 +18,8 @@ namespace BarGame.NPS {
             Leaving
         }
 
+        private PlayerCharacter _player;
+
         private State _startingState;
         private State _currentState;
         private Collider2D[] _colliders = new Collider2D[1];
@@ -26,7 +29,7 @@ namespace BarGame.NPS {
         private DialogueDisplayer _dialogueDisplayer;
         private MovingDialogueBox _movingDialogueBox;
         private RecipesManager _recipesManager;
-        private PlayerCharacter _player;
+        private Table _table;
 
         private Rigidbody2D _rb;
 
@@ -45,7 +48,8 @@ namespace BarGame.NPS {
             _currentState = _startingState;
 
             _pathFindingLogic = GetComponent<PathFindingLogic>();
-            _dialogueDisplayer = FindObjectOfType<DialogueDisplayer>();
+            _dialogueDisplayer = GetComponentInChildren<DialogueDisplayer>(true);
+            _movingDialogueBox = GetComponentInChildren<MovingDialogueBox>(true);
             _recipesManager = new RecipesManager();
             _recipes = _recipesManager.Recipes;
 
@@ -70,7 +74,6 @@ namespace BarGame.NPS {
                     OrderWaiting();
                     break;
                 case State.Leaving:
-                    Debug.Log("was");
                     _pathFindingLogic.ExitingBar(_recipeMatched);
                     break;
                 default:
@@ -79,6 +82,11 @@ namespace BarGame.NPS {
                     CheckCurrentState();
                     break;
             }
+        }
+
+        public void SetCurrentTable(Table table)
+        {
+            _table = table;
         }
 
         private void CheckCurrentState()
@@ -99,11 +107,11 @@ namespace BarGame.NPS {
 
         private void Phrasing()
         {
-            
-            _timerInSec += Time.deltaTime;
-            
 
-            if (Input.GetKeyDown(KeyCode.UpArrow) && ! _dialogueDisplayer.dialogueStarted && _player != null && _timerInSec < _timerMM)
+            _timerInSec += Time.deltaTime;
+
+
+            if (Input.GetKeyDown(KeyCode.UpArrow) && !_dialogueDisplayer.dialogueStarted && _player != null && _timerInSec < _timerMM)
             {
                 _timerInSec = 0;
                 _dialogueDisplayer.StartingDialogue();
@@ -117,14 +125,14 @@ namespace BarGame.NPS {
                     _movingDialogueBox.SetCustomer(transform);
                 }
 
-            } else if (_timerInSec >= _timerMM)
+            }
+            else if (_timerInSec >= _timerMM)
             {
                 _timerInSec = 0;
                 _currentState = State.Leaving;
             }
             if (_player != null)
-                _player.ActionHandler.canMove = ! _dialogueDisplayer.dialogueStarted;
-
+                _player.ActionHandler.canMove = !_dialogueDisplayer.dialogueStarted;
         }
 
         private void OrderWaiting()
@@ -137,18 +145,26 @@ namespace BarGame.NPS {
             }*/
 
             var mask = LayerUtils.PickUpLayer;
-            var radius = 3f;
-            var size = Physics2D.OverlapCircleNonAlloc(transform.position, radius, _colliders, mask);
-            ; // Fix this logic - we need this ray to cast in the direction of a table
-            if (_colliders[0] != null)
+            var rayDistance = 3f;
+
+            float direction = (_table.transform.position - transform.position).normalized.x;
+            Vector2 horizontalDirection = new Vector2(direction, 0);
+            RaycastHit2D hit = Physics2D.Raycast(
+                transform.position,
+                horizontalDirection,
+                rayDistance,
+                mask
+            );
+            if (hit.collider != null)
             {
-                _givenGlassObj = _colliders[0].gameObject;
+                _givenGlassObj = hit.collider.gameObject;
                 if (_givenGlassObj != null && TagUtils.IsGlass(_givenGlassObj))
                 {
                     _givenGlass = _givenGlassObj.GetComponent<Glass>();
                     _recipeMatched = CompareRecipes(_givenGlass.RecipeToMatch); 
                     Debug.Log(_recipeMatched);
                     _givenGlass.RecipeToMatch.Clear();
+                    _dialogueDisplayer.EndingPhrase(_recipeMatched);
                     _currentState = State.Leaving;
                 }
             }
@@ -190,8 +206,5 @@ namespace BarGame.NPS {
         {
             _player = null;
         }
-
-
-
     }
 }

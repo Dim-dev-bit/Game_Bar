@@ -13,8 +13,19 @@ MonoBehaviour:
   m_Name: GreetDialogue
   m_EditorClassIdentifier: 
   dialogueLines:
-  - dialogue: Hi
-  - dialogue: Hi
-  - dialogue: I'd like one valera, please!
-  - dialogue: I'd like one lemonade, please!
-  - dialogue: Thank you
+  - dialogue: filler
+    image: {fileID: -7768745092586228418, guid: 498d6c33c89360e43b56b0934609c613, type: 3}
+  - dialogue: question
+    image: {fileID: -7768745092586228418, guid: 498d6c33c89360e43b56b0934609c613, type: 3}
+  - dialogue: valera
+    image: {fileID: -136462925507815419, guid: 498d6c33c89360e43b56b0934609c613, type: 3}
+  - dialogue: lemonade
+    image: {fileID: 1328147071604349809, guid: 498d6c33c89360e43b56b0934609c613, type: 3}
+  - dialogue: waiting line
+    image: {fileID: -9219463877327293782, guid: 498d6c33c89360e43b56b0934609c613, type: 3}
+  - dialogue: place of order
+    image: {fileID: 8790757646879976015, guid: 498d6c33c89360e43b56b0934609c613, type: 3}
+  - dialogue: Not matched
+    image: {fileID: -1409366849671986712, guid: 498d6c33c89360e43b56b0934609c613, type: 3}
+  - dialogue: Matched
+    image: {fileID: 8790757646879976015, guid: 498d6c33c89360e43b56b0934609c613, type: 3}
