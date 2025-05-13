@@ -35,6 +35,10 @@ namespace BarGame.NPS {
         private Dictionary<string, List<string>> _recipes;
         private GameObject _givenGlassObj;
         private Glass _givenGlass;
+
+        public ProgressBarForNPS progressBarController;
+        private float _timerMM = 15f;
+        private float _timerInSec = 0f;
         protected void Awake()
         {
             _startingState = State.Searching;
@@ -54,10 +58,15 @@ namespace BarGame.NPS {
             switch (_currentState)
             {
                 case State.Phrasing:
+                    _timerInSec = 0;
+                    _timerMM = 15f;
+                    progressBarController.StartProgress(_timerMM);
                     Phrasing();
                     CheckCurrentState();
                     break;
                 case State.OrderWaiting:
+                    _timerInSec = 0;
+                    //progressBarController.StartProgress(_timerMax);
                     OrderWaiting();
                     break;
                 case State.Leaving:
@@ -90,9 +99,13 @@ namespace BarGame.NPS {
 
         private void Phrasing()
         {
-            if (Input.GetKeyDown(KeyCode.UpArrow) && ! _dialogueDisplayer.dialogueStarted && _player != null)
+            
+            _timerInSec += Time.deltaTime;
+            
+
+            if (Input.GetKeyDown(KeyCode.UpArrow) && ! _dialogueDisplayer.dialogueStarted && _player != null && _timerInSec < _timerMM)
             {
-                
+                _timerInSec = 0;
                 _dialogueDisplayer.StartingDialogue();
                 _movingDialogueBox = FindObjectOfType<MovingDialogueBox>();
                 if (_movingDialogueBox == null)
@@ -104,6 +117,10 @@ namespace BarGame.NPS {
                     _movingDialogueBox.SetCustomer(transform);
                 }
 
+            } else if (_timerInSec >= _timerMM)
+            {
+                _timerInSec = 0;
+                _currentState = State.Leaving;
             }
             if (_player != null)
                 _player.ActionHandler.canMove = ! _dialogueDisplayer.dialogueStarted;
@@ -112,6 +129,13 @@ namespace BarGame.NPS {
 
         private void OrderWaiting()
         {
+            /*_timerInSec += Time.deltaTime;
+            if (_timerInSec > _timerMax)
+            {
+                Debug.LogError("im go away");
+                _timerInSec = 0;
+            }*/
+
             var mask = LayerUtils.PickUpLayer;
             var radius = 3f;
             var size = Physics2D.OverlapCircleNonAlloc(transform.position, radius, _colliders, mask);
