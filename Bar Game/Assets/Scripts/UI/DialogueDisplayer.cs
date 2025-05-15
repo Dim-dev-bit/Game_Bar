@@ -56,17 +56,14 @@ namespace BarGame.UI {
                 int ind = Random.Range(2, 2 + _numberOfChoices); // One is the num of windows before choice of drinks
                 for (int i = 1; i < _greetingDialogueLength; i++)
                 {
-                    Debug.Log("222");
                     if (i == 2) // This is the last line before variety of drinks  
                     {
                         dialogueImage.sprite = dialogueObject.dialogueLines[ind].image;
                         orderPhrase = dialogueObject.dialogueLines[ind].dialogue;
                         i += _numberOfChoices - 1;
-                        Debug.Log(i);
                     }
                     else
                     {
-                        Debug.Log(i);
                         // So that in the end the choice of a customer will be shown
                         if (i != _greetingDialogueLength - 1)
                             dialogueImage.sprite = dialogueObject.dialogueLines[i].image;
@@ -80,7 +77,6 @@ namespace BarGame.UI {
 
                 dialogueStarted = false;
                 dialogueFinished = true;
-                //dialogueBox.SetActive(false);
             }
 
             _player.ActionHandler.canMove = true;

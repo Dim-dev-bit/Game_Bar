@@ -11,7 +11,7 @@ namespace BarGame.Player.Interactions {
 
         private string _tag;
         private SpriteRenderer _mySpriteRenderer;
-        private Transform _holdPoint;
+        public Transform holdPoint;
 
         protected void Awake()
         {
@@ -20,13 +20,20 @@ namespace BarGame.Player.Interactions {
         public void Initialize(SpriteRenderer mySpriteRenderer, Transform holdPosition, float lookDistance)
         {
             _mySpriteRenderer = mySpriteRenderer;
-            _holdPoint = holdPosition;
+            holdPoint = holdPosition;
             LookDistance = lookDistance;
         }
 
         public void SetCurrentTable(Table otherTable)
         {
             table = otherTable;
+        }
+
+        public void SetCurrentPickUp(GameObject pickUp)
+        {
+            PickUp = pickUp;
+            IsHold = true;
+            _tag = PickUp.tag;
         }
 
         public GameObject GetPickUp()
@@ -75,12 +82,19 @@ namespace BarGame.Player.Interactions {
                             PickUp.layer = LayerUtils.PickUpLayerNum;
                             IsHold = false;
                             _tag = null;
+                            PickUp = null;
                         }
                     }
                 }
             }
-            if (IsHold)
-                PickUp.transform.position = _holdPoint.position;
+            if (IsHold) {
+                if (PickUp != null)
+                    PickUp.transform.position = holdPoint.position;
+                else
+                {
+                    IsHold = false;
+                }
+            }
         }
     }
 }

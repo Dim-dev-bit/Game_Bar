@@ -13,6 +13,11 @@ TagManager:
   - Ice
   - Wine
   - Customer
+  - Undefined
+  - Fruit
+  - Apple
+  - Orange
+  - Strawberry
   layers:
   - Default
   - TransparentFX

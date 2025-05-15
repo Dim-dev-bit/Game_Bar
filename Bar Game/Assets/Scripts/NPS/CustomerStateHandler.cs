@@ -110,7 +110,6 @@ namespace BarGame.NPS {
         {
             var mask = LayerUtils.PickUpLayer;
             var rayDistance = 3f;
-
             float direction = (_table.transform.position - transform.position).normalized.x;
             Vector2 horizontalDirection = new Vector2(direction, 0);
             RaycastHit2D hit = Physics2D.Raycast(
