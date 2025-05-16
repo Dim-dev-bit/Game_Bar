@@ -38,6 +38,11 @@ namespace BarGame.NPS {
         private Dictionary<string, List<string>> _recipes;
         private GameObject _givenGlassObj;
         private Glass _givenGlass;
+
+        public ProgressBarForNPS progressBarController;
+        
+        private float _timerMM = 20f;
+        private float _timerInSec = 0f;
         protected void Awake()
         {
             _startingState = State.Searching;
@@ -58,10 +63,14 @@ namespace BarGame.NPS {
             switch (_currentState)
             {
                 case State.Phrasing:
+                    
+                    progressBarController.StartProgress(_timerMM);
                     Phrasing();
                     CheckCurrentState();
                     break;
                 case State.OrderWaiting:
+
+                    
                     OrderWaiting();
                     break;
                 case State.Leaving:
@@ -84,11 +93,14 @@ namespace BarGame.NPS {
         {
             if (_currentState == State.Searching && _pathFindingLogic.IsStopped)
             {
+                _movingDialogueBox.SetCustomer(transform);
                 _currentState = State.Phrasing;
                 _rb.velocity = new Vector2(0f, 0f);
             }
             else if (_currentState == State.Phrasing && _dialogueDisplayer.dialogueFinished && _player != null) 
             {
+                _timerInSec = 0f;
+                progressBarController.Renewed(_timerMM);
                 _currentState = State.OrderWaiting;
                 _order = GetRecipe(_dialogueDisplayer.orderPhrase);
 
@@ -98,9 +110,19 @@ namespace BarGame.NPS {
 
         private void Phrasing()
         {
-            _dialogueDisplayer.SetPlayer(_player);
-            if (! _dialogueDisplayer.dialogueStarted && ! _dialogueDisplayer.dialogueFinished)
+            _timerInSec += Time.deltaTime;
+
+            if (_timerInSec >= _timerMM)
             {
+                Debug.Log("воимшвишвившитвшитвшитви");
+                _timerInSec = 0f;
+                _currentState = State.Leaving;
+            }
+
+            _dialogueDisplayer.SetPlayer(_player);
+            if (!_dialogueDisplayer.dialogueStarted && !_dialogueDisplayer.dialogueFinished)
+            {
+                _timerInSec = 0f;
                 _dialogueDisplayer.StartingDialogue();
                 _movingDialogueBox.SetCustomer(transform);
             }
@@ -108,6 +130,15 @@ namespace BarGame.NPS {
 
         private void OrderWaiting()
         {
+            _timerInSec += Time.deltaTime;
+
+            if (_timerInSec >= _timerMM)
+            {
+                Debug.Log("воимшвишвившитвшитвшитви");
+                _timerInSec = 0f;
+                _currentState = State.Leaving;
+            }
+
             var mask = LayerUtils.PickUpLayer;
             var rayDistance = 3f;
             float direction = (_table.transform.position - transform.position).normalized.x;
@@ -128,6 +159,7 @@ namespace BarGame.NPS {
                     Debug.Log(_recipeMatched);
                     _givenGlass.RecipeToMatch.Clear();
                     _dialogueDisplayer.EndingPhrase(_recipeMatched);
+                    _timerInSec = 0f;
                     _currentState = State.Leaving;
                 }
             }
