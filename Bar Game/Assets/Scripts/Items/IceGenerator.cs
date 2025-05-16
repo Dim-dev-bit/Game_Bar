@@ -20,7 +20,7 @@ namespace BarGame.Items {
             if (_currentTime >= _maxTime && !_hasTakenIce)
             {
                 // Not just transform, because it generates it somewhere... I dunno, just use Quaternion.
-                Instantiate(IcePrefab, IcePositionTransform.position, Quaternion.identity);
+                Instantiate(IcePrefab, new Vector3(IcePositionTransform.position.x, IcePositionTransform.position.y, 0), Quaternion.identity);
                 _currentTime = 0f;
                 _hasTakenIce = true;
             }

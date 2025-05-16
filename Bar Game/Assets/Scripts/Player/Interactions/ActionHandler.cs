@@ -79,6 +79,8 @@ namespace BarGame.Player.Interactions {
                 _timerInSec += Time.deltaTime;
                 if (_timerInSec >= _timerMax)
                 {
+                    if (gameObject.GetComponent<PlayerCharacter>().PickUpHandler.PickUp.tag != TagUtils.ShakerTagName)
+                        gameObject.GetComponent<PlayerCharacter>().PickUpHandler.DestroyCurrentPickUp();
                     Debug.Log("Poured!");
                     _timerInSec = 0;
                     _isPouring = false;

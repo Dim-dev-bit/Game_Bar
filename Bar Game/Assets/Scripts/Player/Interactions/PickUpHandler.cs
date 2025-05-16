@@ -36,6 +36,14 @@ namespace BarGame.Player.Interactions {
             _tag = PickUp.tag;
         }
 
+        public void DestroyCurrentPickUp()
+        {
+            Destroy(PickUp);
+            IsHold = false;
+            _tag = null;
+            PickUp = null;
+        }
+
         public GameObject GetPickUp()
         {
             GameObject pickUp = null;

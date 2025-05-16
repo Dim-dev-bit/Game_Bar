@@ -9,7 +9,10 @@ namespace BarGame {
         public const string PlayerTagName = "Player";
         public const string CustomerTagName = "Customer";
 
-        public const string BottleTagName = "Bottle";
+        public const string AppleJuiceTagName = "AppleJuice";
+        public const string OrangeJuiceTagName = "OrangeJuice";
+        public const string StrawberryJuiceTagName = "StrawberryJuice";
+
         public const string WineTagName = "Wine";
         public const string ShakerTagName = "Shaker";
         public const string SpoonTagName = "Spoon";
@@ -56,14 +59,18 @@ namespace BarGame {
 
         private static List<string> _ingredients = new List<string>
         {
-            BottleTagName,
+            AppleJuiceTagName,
+            OrangeJuiceTagName,
+            StrawberryJuiceTagName,
             IceTagName,
             WineTagName
         };
 
         public static List<string> PickUps = new List<string>
         {
-            BottleTagName, 
+            AppleJuiceTagName, 
+            OrangeJuiceTagName,
+            StrawberryJuiceTagName,
             ShakerTagName, 
             SpoonTagName, 
             GlassTagName,

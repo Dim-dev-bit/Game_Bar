@@ -4,18 +4,22 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
+using Assets.Scripts.Utils;
 
 namespace BarGame.UI {
     public class FruitBox : MonoBehaviour {
+        public ConversionObject _currentConversionObject;
+
         private GameObject _currentFruit;
         private GameObject _currentChosenFruit;
         private PlayerCharacter _player;
+        private Coroutine _coroutine;
         [SerializeField] private GameObject _Menu;
         [SerializeField] private Text _hintText;
         [SerializeField] private Text _infoText;
+        private Dictionary<string, GameObject> _connections;
 
-
-        public Dictionary<GameObject, int> fruitsCounts = new Dictionary<GameObject, int>();
+        public Dictionary<string, int> fruitsCounts = new Dictionary<string, int>();
         private bool _showInfoText = false;
         private bool _isPlayerNear = false;
 
@@ -23,6 +27,11 @@ namespace BarGame.UI {
 
         protected void Start()
         {
+            _connections = new Dictionary<string, GameObject>();
+            foreach (var element in _currentConversionObject.conversions)
+            {
+                _connections.Add(element.name, element.prefab);
+            }
             _Menu.SetActive(false);
             _infoText.gameObject.SetActive(false);
             _hintText.gameObject.SetActive(false);
@@ -36,18 +45,19 @@ namespace BarGame.UI {
             if (_isPlayerNear && Input.GetKeyDown(KeyCode.L) && !_showInfoText && !_player.PickUpHandler.IsHold)
             {
                 _showInfoText = true;
-                StartCoroutine(StartingChoosing());
+                _coroutine = StartCoroutine(StartingChoosing());
             }
             if (_isPlayerNear && _currentFruit != null && Input.GetKeyDown(KeyCode.K))
             {
-                if (fruitsCounts.ContainsKey(_currentFruit))
+                if (fruitsCounts.ContainsKey(_currentFruit.tag))
                 {
-                    fruitsCounts[_currentFruit]++;
+                    fruitsCounts[_currentFruit.tag]++;
                 }
                 else
                 {
-                    fruitsCounts.Add(_currentFruit, 1);
+                    fruitsCounts.Add(_currentFruit.tag, 1);
                 }
+                _player.PickUpHandler.DestroyCurrentPickUp();
                 UpdateMenuDisplay(_curChoice);
             }
         }
@@ -60,16 +70,16 @@ namespace BarGame.UI {
 
             _infoText.text = "";
 
-            var sorted = fruitsCounts.OrderBy(kvp => kvp.Key.tag).ToList();
+            var sorted = fruitsCounts.OrderBy(kvp => kvp.Key).ToList();
 
             _infoText.text = "";
             for (int i = 0; i < sorted.Count; i++)
             {
                 if (i == highlightIndex)
-                    _currentChosenFruit = sorted[i].Key;
+                    _currentChosenFruit = _connections[sorted[i].Key];
                 _infoText.text += (i == highlightIndex)
-                    ? $"<{sorted[i].Key.tag} x{sorted[i].Value}>\n"
-                    : $"{sorted[i].Key.tag} x{sorted[i].Value}\n";
+                    ? $"<{sorted[i].Key} x{sorted[i].Value}>\n"
+                    : $"{sorted[i].Key} x{sorted[i].Value}\n";
             }
         }
 
@@ -119,7 +129,7 @@ namespace BarGame.UI {
 
         private void SetCurrentFruit(GameObject ChosenFruit)
         {
-            if (_player == null || !fruitsCounts.ContainsKey(ChosenFruit)) return;
+            if (_player == null || !fruitsCounts.ContainsKey(ChosenFruit.tag)) return;
             {
                 if (_player.PickUpHandler.PickUp != null)
                     Destroy(_player.PickUpHandler.PickUp);
@@ -128,16 +138,11 @@ namespace BarGame.UI {
 
                 _player.PickUpHandler.SetCurrentPickUp(holdingFruit);
 
-                fruitsCounts[ChosenFruit]--;
-                if (fruitsCounts[ChosenFruit] == 0)
-                    fruitsCounts.Remove(ChosenFruit);
+                fruitsCounts[ChosenFruit.tag]--;
+                if (fruitsCounts[ChosenFruit.tag] == 0)
+                    fruitsCounts.Remove(ChosenFruit.tag);
             }
         }
-        public string ShowInfo()
-        {
-            return _infoText.text;
-        }
-
         protected void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag(TagUtils.PlayerTagName))
@@ -163,6 +168,11 @@ namespace BarGame.UI {
                 _player = null;
                 _infoText.gameObject.SetActive(false);
                 _hintText.gameObject.SetActive(false);
+                if (_coroutine != null)
+                {
+                    StopCoroutine( _coroutine );
+                    _coroutine = null;
+                }
                 _Menu.SetActive(_isPlayerNear);
             }
         }

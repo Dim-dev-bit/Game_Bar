@@ -33,7 +33,6 @@ namespace BarGame.UI {
         {
             dialogueFinished = false;
             dialogueStarted = true;
-            dialogueBox.SetActive(true);
             DisplayDialogue(currentDialogue);
         }
 
@@ -49,6 +48,7 @@ namespace BarGame.UI {
         private IEnumerator MoveThroughDialogue(DialogueObject dialogueObject)
         {
             dialogueImage.sprite = dialogueObject.dialogueLines[0].image;
+            dialogueBox.SetActive(true);
             yield return new WaitUntil(() => (Input.GetKeyDown(KeyCode.UpArrow) && _player != null));
             _player.ActionHandler.canMove = !dialogueStarted;
             if (_player != null && Input.GetKeyDown(KeyCode.UpArrow))

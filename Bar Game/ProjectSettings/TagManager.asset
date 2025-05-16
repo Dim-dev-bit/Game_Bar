@@ -18,6 +18,9 @@ TagManager:
   - Apple
   - Orange
   - Strawberry
+  - AppleJuice
+  - StrawberryJuice
+  - OrangeJuice
   layers:
   - Default
   - TransparentFX
