@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   conversions:
   - name: Apple
-    prefab: {fileID: 1711169563366308779, guid: e6acf9a8167356e4c848b9a88f220cda, type: 3}
+    prefab: {fileID: 5447582913572301311, guid: c0d7b25591e14494b8657aacfe5a663a, type: 3}
   - name: Orange
     prefab: {fileID: 5447582913572301311, guid: aec98c27a7d4a1e4fba25a776f5f0a68, type: 3}
   - name: Strawberry

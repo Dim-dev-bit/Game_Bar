@@ -63,8 +63,6 @@ namespace BarGame.NPS {
             switch (_currentState)
             {
                 case State.Phrasing:
-                    
-                    progressBarController.StartProgress(_timerMM);
                     Phrasing();
                     CheckCurrentState();
                     break;
@@ -94,6 +92,7 @@ namespace BarGame.NPS {
             if (_currentState == State.Searching && _pathFindingLogic.IsStopped)
             {
                 _movingDialogueBox.SetCustomer(transform);
+                progressBarController.StartProgress(_timerMM);
                 _currentState = State.Phrasing;
                 _rb.velocity = new Vector2(0f, 0f);
             }
@@ -114,7 +113,6 @@ namespace BarGame.NPS {
 
             if (_timerInSec >= _timerMM)
             {
-                Debug.Log("воимшвишвившитвшитвшитви");
                 _timerInSec = 0f;
                 _currentState = State.Leaving;
             }
@@ -134,7 +132,6 @@ namespace BarGame.NPS {
 
             if (_timerInSec >= _timerMM)
             {
-                Debug.Log("воимшвишвившитвшитвшитви");
                 _timerInSec = 0f;
                 _currentState = State.Leaving;
             }

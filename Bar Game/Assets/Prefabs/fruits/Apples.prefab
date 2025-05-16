@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1200441350032563305}
   m_Layer: 0
   m_Name: Apples
-  m_TagString: Orange
+  m_TagString: Apple
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

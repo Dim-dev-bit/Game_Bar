@@ -32,9 +32,7 @@ public class ProgressBarForNPS : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
             progressBar.fillAmount = elapsedTime / givenTime;
-            Debug.Log(elapsedTime);
             yield return null;
-
         }
         progressBar.fillAmount = 0f;
         elapsedTime = 0f; // Сброс переменной elapsedTime

@@ -64,9 +64,11 @@ namespace BarGame.UI {
 
         private void UpdateMenuDisplay(int highlightIndex = 0)
         {
-            if (fruitsCounts.Count == 0) return;
-
-            _curChoice = Mathf.Clamp(highlightIndex, 0, fruitsCounts.Count - 1);
+            if (fruitsCounts.Count == 0)
+            {
+                _currentChosenFruit = null; // Явный сброс
+                return;
+            }
 
             _infoText.text = "";
 
@@ -112,7 +114,7 @@ namespace BarGame.UI {
                 }
                 else if (Input.GetKeyDown(KeyCode.Return))
                 {
-                    SetCurrentFruit(_currentChosenFruit);
+                    SetCurrentFruit();
                     _infoText.gameObject.SetActive(false);
                     yield break;
                 }
@@ -127,21 +129,22 @@ namespace BarGame.UI {
             }
         }
 
-        private void SetCurrentFruit(GameObject ChosenFruit)
+        private void SetCurrentFruit()
         {
-            if (_player == null || !fruitsCounts.ContainsKey(ChosenFruit.tag)) return;
-            {
-                if (_player.PickUpHandler.PickUp != null)
-                    Destroy(_player.PickUpHandler.PickUp);
-                GameObject holdingFruit = Instantiate(ChosenFruit, _player.PickUpHandler.holdPoint);
-                holdingFruit.transform.SetParent(null);
+            UpdateMenuDisplay(_curChoice);
+            if (_player == null || !fruitsCounts.ContainsKey(_currentChosenFruit.tag)) return;
 
-                _player.PickUpHandler.SetCurrentPickUp(holdingFruit);
+            if (_player.PickUpHandler.PickUp != null)
+                Destroy(_player.PickUpHandler.PickUp);
+            GameObject holdingFruit = Instantiate(_currentChosenFruit, _player.PickUpHandler.holdPoint);
+            holdingFruit.transform.SetParent(null);
 
-                fruitsCounts[ChosenFruit.tag]--;
-                if (fruitsCounts[ChosenFruit.tag] == 0)
-                    fruitsCounts.Remove(ChosenFruit.tag);
-            }
+            _player.PickUpHandler.SetCurrentPickUp(holdingFruit);
+
+            fruitsCounts[_currentChosenFruit.tag]--;
+            if (fruitsCounts[_currentChosenFruit.tag] == 0)
+                fruitsCounts.Remove(_currentChosenFruit.tag);
+            _curChoice = 0;
         }
         protected void OnTriggerEnter2D(Collider2D other)
         {
