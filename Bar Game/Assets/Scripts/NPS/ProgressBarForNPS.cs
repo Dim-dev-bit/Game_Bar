@@ -45,5 +45,14 @@ public class ProgressBarForNPS : MonoBehaviour
 
         yield return null;
     }
+
+    public void Renewed(float givenTime)
+    {
+        Awake();
+
+        progressBar.gameObject.SetActive(true);
+        BackProgressBar.SetActive(true);
+        StartCoroutine(ProgressCoroutine(givenTime));
+    }
 }
 
