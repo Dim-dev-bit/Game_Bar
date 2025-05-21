@@ -94,34 +94,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
-        },
-        {
-            ""name"": ""ObjectInteraction"",
-            ""id"": ""cd3f856a-b223-4859-8241-40c80cf4fc1e"",
-            ""actions"": [
-                {
-                    ""name"": ""TakeAnObject"",
-                    ""type"": ""Button"",
-                    ""id"": ""c4782abf-c60a-4633-b588-6fed794ec1eb"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""b4b0b775-164e-4cd0-9b2e-69ae9779e873"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""TakeAnObject"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
         }
     ],
     ""controlSchemes"": []
@@ -129,15 +101,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
-        // ObjectInteraction
-        m_ObjectInteraction = asset.FindActionMap("ObjectInteraction", throwIfNotFound: true);
-        m_ObjectInteraction_TakeAnObject = m_ObjectInteraction.FindAction("TakeAnObject", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
     {
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, PlayerControls.Player.Disable() has not been called.");
-        UnityEngine.Debug.Assert(!m_ObjectInteraction.enabled, "This will cause a leak and performance issues, PlayerControls.ObjectInteraction.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -241,58 +209,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
-
-    // ObjectInteraction
-    private readonly InputActionMap m_ObjectInteraction;
-    private List<IObjectInteractionActions> m_ObjectInteractionActionsCallbackInterfaces = new List<IObjectInteractionActions>();
-    private readonly InputAction m_ObjectInteraction_TakeAnObject;
-    public struct ObjectInteractionActions
-    {
-        private @PlayerControls m_Wrapper;
-        public ObjectInteractionActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @TakeAnObject => m_Wrapper.m_ObjectInteraction_TakeAnObject;
-        public InputActionMap Get() { return m_Wrapper.m_ObjectInteraction; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(ObjectInteractionActions set) { return set.Get(); }
-        public void AddCallbacks(IObjectInteractionActions instance)
-        {
-            if (instance == null || m_Wrapper.m_ObjectInteractionActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_ObjectInteractionActionsCallbackInterfaces.Add(instance);
-            @TakeAnObject.started += instance.OnTakeAnObject;
-            @TakeAnObject.performed += instance.OnTakeAnObject;
-            @TakeAnObject.canceled += instance.OnTakeAnObject;
-        }
-
-        private void UnregisterCallbacks(IObjectInteractionActions instance)
-        {
-            @TakeAnObject.started -= instance.OnTakeAnObject;
-            @TakeAnObject.performed -= instance.OnTakeAnObject;
-            @TakeAnObject.canceled -= instance.OnTakeAnObject;
-        }
-
-        public void RemoveCallbacks(IObjectInteractionActions instance)
-        {
-            if (m_Wrapper.m_ObjectInteractionActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
-
-        public void SetCallbacks(IObjectInteractionActions instance)
-        {
-            foreach (var item in m_Wrapper.m_ObjectInteractionActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_ObjectInteractionActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
-    }
-    public ObjectInteractionActions @ObjectInteraction => new ObjectInteractionActions(this);
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
-    }
-    public interface IObjectInteractionActions
-    {
-        void OnTakeAnObject(InputAction.CallbackContext context);
     }
 }
