@@ -1,7 +1,7 @@
 ﻿using BarGame.Items;
+using BarGame.ProgressBar;
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace BarGame.Player.Interactions {
@@ -71,7 +71,7 @@ namespace BarGame.Player.Interactions {
                 {
                     _isPouring = true;
                     canMove = false;
-  
+
                     _timerInSec = 0;
                     progressBarController.StartProgress(_timerMax);
 
@@ -91,12 +91,80 @@ namespace BarGame.Player.Interactions {
                         shaker.AddToGlass(glass.RecipeToMatch);
                     else if (_stateHandler.CurrentFillingObject == "Shaker")
                         shaker.ShakingActions.Add(_stateHandler.CurrentAction);
-                    OnCompletingAction?.Invoke();
 
                     _stateHandler.SetState(StateHandler.State.Basic);
                 }
             }
+            else if (_timerInSec < _timerMax && Input.GetKeyUp(KeyCode.H))
+            {
+                Debug.Log("WAS");
+                _isPouring = false;
+                canMove = true;
+                _timerInSec = 0;
+                _stateHandler.SetState(StateHandler.State.Basic);
+                progressBarController.ResetProgress();
+            }
         }
+        //public void Filling()
+        //{
+        //    if (shaker == null)
+        //    {
+        //        _stateHandler.SetState(StateHandler.State.Basic);
+        //        return;
+        //    }
+
+        //    if (Input.GetKeyDown(KeyCode.H) && !_isPouring) // Используем GetKeyDown для однократного срабатывания
+        //    {
+        //        StartPouring();
+        //    }
+        //    if (_isPouring)
+        //        _timerInSec += Time.deltaTime;
+        //    else if (Input.GetKeyUp(KeyCode.H)) // При отпускании клавиши
+        //    {
+        //        Debug.Log("WAS");
+        //        StopPouring();
+        //    }
+        //}
+
+        //private void StartPouring()
+        //{
+        //    _isPouring = true;
+        //    canMove = false;
+        //    _timerInSec = 0;
+        //    progressBarController.StartProgress(_timerMax);
+        //}
+
+        //private void StopPouring()
+        //{
+        //    _isPouring = false;
+        //    canMove = true;
+        //    Debug.Log(_timerInSec);
+
+        //    if (_timerInSec >= _timerMax)
+        //    {
+        //        CompletePouring();
+        //    }
+        //    else
+        //    {
+        //        progressBarController.ResetProgress();
+        //    }
+        //}
+
+        //private void CompletePouring()
+        //{
+        //    if (gameObject.GetComponent<PlayerCharacter>().PickUpHandler.PickUp.tag != TagUtils.ShakerTagName)
+        //        gameObject.GetComponent<PlayerCharacter>().PickUpHandler.DestroyCurrentPickUp();
+
+        //    Debug.Log("Poured!");
+        //    _timerInSec = 0;
+
+        //    if (_stateHandler.CurrentFillingObject == "Glass")
+        //        shaker.AddToGlass(glass.RecipeToMatch);
+        //    else if (_stateHandler.CurrentFillingObject == "Shaker")
+        //        shaker.ShakingActions.Add(_stateHandler.CurrentAction);
+
+        //    _stateHandler.SetState(StateHandler.State.Basic);
+        //}
         private void CheckSequence(List<KeyCode> sequence)
         {
             if (playerInput.Count == sequence.Count)

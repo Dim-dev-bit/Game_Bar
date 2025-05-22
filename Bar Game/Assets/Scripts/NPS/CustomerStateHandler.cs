@@ -1,12 +1,12 @@
 ﻿using BarGame.Furniture;
 using BarGame.Items;
 using BarGame.Player;
+using BarGame.ProgressBar;
 using BarGame.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace BarGame.NPS {
     public class CustomerStateHandler : MonoBehaviour {
@@ -22,7 +22,6 @@ namespace BarGame.NPS {
 
         private State _startingState;
         private State _currentState;
-        private Collider2D[] _colliders = new Collider2D[1];
         private bool _recipeMatched;
 
         private PathFindingLogic _pathFindingLogic;
@@ -42,6 +41,7 @@ namespace BarGame.NPS {
         public ProgressBarForNPS progressBarController;
         
         private float _timerMM = 20f;
+        private float _timerOW = 40f;
         private float _timerInSec = 0f;
         protected void Awake()
         {
@@ -99,7 +99,7 @@ namespace BarGame.NPS {
             else if (_currentState == State.Phrasing && _dialogueDisplayer.dialogueFinished && _player != null) 
             {
                 _timerInSec = 0f;
-                progressBarController.Renewed(_timerMM);
+                progressBarController.Renewed(_timerOW);
                 _currentState = State.OrderWaiting;
                 _order = GetRecipe(_dialogueDisplayer.orderPhrase);
 
@@ -114,6 +114,8 @@ namespace BarGame.NPS {
             if (_timerInSec >= _timerMM)
             {
                 _timerInSec = 0f;
+                _recipeMatched = false;
+                _dialogueDisplayer.EndingPhrase(_recipeMatched);
                 _currentState = State.Leaving;
             }
 
@@ -130,34 +132,39 @@ namespace BarGame.NPS {
         {
             _timerInSec += Time.deltaTime;
 
-            if (_timerInSec >= _timerMM)
+            if (_timerInSec >= _timerOW)
             {
                 _timerInSec = 0f;
+                _recipeMatched = false;
+                _dialogueDisplayer.EndingPhrase(_recipeMatched);
                 _currentState = State.Leaving;
             }
 
             var mask = LayerUtils.PickUpLayer;
             var rayDistance = 3f;
-            float direction = (_table.transform.position - transform.position).normalized.x;
-            Vector2 horizontalDirection = new Vector2(direction, 0);
-            RaycastHit2D hit = Physics2D.Raycast(
-                transform.position,
-                horizontalDirection,
-                rayDistance,
-                mask
-            );
-            if (hit.collider != null)
+            if (_table != null)
             {
-                _givenGlassObj = hit.collider.gameObject;
-                if (_givenGlassObj != null && TagUtils.IsGlass(_givenGlassObj))
+                float direction = (_table.transform.position - transform.position).normalized.x;
+                Vector2 horizontalDirection = new Vector2(direction, 0);
+                RaycastHit2D hit = Physics2D.Raycast(
+                    transform.position,
+                    horizontalDirection,
+                    rayDistance,
+                    mask
+                );
+                if (hit.collider != null)
                 {
-                    _givenGlass = _givenGlassObj.GetComponent<Glass>();
-                    _recipeMatched = CompareRecipes(_givenGlass.RecipeToMatch); 
-                    Debug.Log(_recipeMatched);
-                    _givenGlass.RecipeToMatch.Clear();
-                    _dialogueDisplayer.EndingPhrase(_recipeMatched);
-                    _timerInSec = 0f;
-                    _currentState = State.Leaving;
+                    _givenGlassObj = hit.collider.gameObject;
+                    if (_givenGlassObj != null && TagUtils.IsGlass(_givenGlassObj))
+                    {
+                        _givenGlass = _givenGlassObj.GetComponent<Glass>();
+                        _recipeMatched = CompareRecipes(_givenGlass.RecipeToMatch);
+                        Debug.Log(_recipeMatched);
+                        _givenGlass.RecipeToMatch.Clear();
+                        _dialogueDisplayer.EndingPhrase(_recipeMatched);
+                        _timerInSec = 0f;
+                        _currentState = State.Leaving;
+                    }
                 }
             }
         }

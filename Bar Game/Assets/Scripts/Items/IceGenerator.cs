@@ -1,42 +1,43 @@
 ﻿using BarGame.Player;
+using BarGame.ProgressBar;
 using UnityEngine;
 
 namespace BarGame.Items {
     public class IceGenerator : MonoBehaviour {
         [SerializeField] private GameObject IcePrefab;
-        [SerializeField] private Transform IcePositionTransform;
-        private float _currentTime;
-        private float _maxTime;
+        public ProgressBarForIce _progressBarForIce;
+        private PlayerCharacter _player;
         private bool _hasTakenIce;
         protected void Start()
         {
-            _currentTime = 0f;
-            _maxTime = 5f;
             _hasTakenIce = false;
+            _progressBarForIce.StartProgress();
         }
         protected void Update()
         {
-            _currentTime += Time.deltaTime;
-            if (_currentTime >= _maxTime && !_hasTakenIce)
+            if (_player != null && _player.PickUpHandler.PickUp == null && Input.GetKeyDown(KeyCode.UpArrow) && _progressBarForIce.currentAmount != 0)
             {
-                // Not just transform, because it generates it somewhere... I dunno, just use Quaternion.
-                Instantiate(IcePrefab, new Vector3(IcePositionTransform.position.x, IcePositionTransform.position.y, 0), Quaternion.identity);
-                _currentTime = 0f;
-                _hasTakenIce = true;
+                GameObject ice = Instantiate(IcePrefab, _player.PickUpHandler.holdPoint.position, Quaternion.identity);
+                _player.PickUpHandler.SetCurrentPickUp(ice);
+                ice.transform.SetParent(null);
+
+                _progressBarForIce.currentAmount--;
+                _progressBarForIce.UpdateProgress(_progressBarForIce.currentAmount);
             }
         }
-
+        protected void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.CompareTag(TagUtils.PlayerTagName))
+            {
+                Debug.Log("ENTER");
+                _player = other.GetComponent<PlayerCharacter>();
+            }
+        }
         protected void OnTriggerExit2D(Collider2D collision)
         {
             if (collision.CompareTag(TagUtils.PlayerTagName))
             {
-                PlayerCharacter player = collision.gameObject.GetComponent<PlayerCharacter>();
-                GameObject pickUp = player.PickUpHandler.PickUp;
-                if (pickUp != null && pickUp.CompareTag(TagUtils.IceTagName) && _hasTakenIce)
-                {
-                    _hasTakenIce = false;
-                    _currentTime = 0f;
-                }
+                _player = null;
             }
         }
     }
