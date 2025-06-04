@@ -43,6 +43,8 @@ namespace BarGame.NPS {
         private float _timerMM = 20f;
         private float _timerOW = 40f;
         private float _timerInSec = 0f;
+
+        public int score = 0;
         protected void Awake()
         {
             _startingState = State.Searching;
@@ -163,6 +165,7 @@ namespace BarGame.NPS {
                         _givenGlass.RecipeToMatch.Clear();
                         _dialogueDisplayer.EndingPhrase(_recipeMatched);
                         _timerInSec = 0f;
+                        score += 1;
                         _currentState = State.Leaving;
                     }
                 }

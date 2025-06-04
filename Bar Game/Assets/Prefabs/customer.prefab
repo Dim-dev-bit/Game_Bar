@@ -172,6 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   progressBarController: {fileID: 3890177859162775442}
+  score: 0
 --- !u!114 &5766748986229235071
 MonoBehaviour:
   m_ObjectHideFlags: 0

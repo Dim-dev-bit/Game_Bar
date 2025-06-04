@@ -10,6 +10,9 @@ namespace Assets.Scripts
         public float restartTime; 
         private float currentTime;
         private bool isTimerRunning = true;
+        public GameObject gameOverPanel;
+        public GameObject hudCanvas;
+        public GameObject hudCanvas1;
 
         public Text timerText;
 
@@ -22,6 +25,7 @@ namespace Assets.Scripts
         // Update is called once per frame
         void Update()
         {
+            hudCanvas1.SetActive(true);
             if (isTimerRunning)
             {
                 currentTime -= Time.deltaTime;
@@ -33,14 +37,28 @@ namespace Assets.Scripts
 
                 if (currentTime <= 0)
                 {
-                    RestartGame();
+                    GameOver();
                 }
             }
         }
 
-        void RestartGame()
+        private void GameOver()
         {
+            Time.timeScale = 0f;
+            isTimerRunning = false;
+            // Показываем панель
+            if (gameOverPanel != null)
+            {
+                gameOverPanel.SetActive(true);
+                hudCanvas.SetActive(false);
+                hudCanvas1.SetActive(false);
+            }
 
+        }
+
+        public void RestartGame()
+        {
+            Time.timeScale = 1f;
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             
 
