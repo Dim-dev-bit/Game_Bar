@@ -5,34 +5,25 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using Assets.Scripts.Utils;
+using BarGame.Player.Interactions;
 
 namespace BarGame.UI {
     public class FruitBox : MonoBehaviour {
-        public ConversionObject _currentConversionObject;
-
-        private GameObject _currentFruit;
-        private GameObject _currentChosenFruit;
-        private PlayerCharacter _player;
-        private Coroutine _coroutine;
-        [SerializeField] private GameObject _Menu;
         [SerializeField] private Text _hintText;
         [SerializeField] private Text _infoText;
-        private Dictionary<string, GameObject> _connections;
+        [SerializeField] private string _tagName;
+        [SerializeField] private GameObject _prefabName;
+        private PlayerCharacter _player;
+        private GameObject _currentFruit;
 
-        public Dictionary<string, int> fruitsCounts = new Dictionary<string, int>();
-        private bool _showInfoText = false;
+        private int _maxAmount = 10;
+        private int _currentAmount = 0;
+
         private bool _isPlayerNear = false;
 
-        private int _curChoice = 0;
 
         protected void Start()
         {
-            _connections = new Dictionary<string, GameObject>();
-            foreach (var element in _currentConversionObject.conversions)
-            {
-                _connections.Add(element.name, element.prefab);
-            }
-            _Menu.SetActive(false);
             _infoText.gameObject.SetActive(false);
             _hintText.gameObject.SetActive(false);
         }
@@ -40,122 +31,35 @@ namespace BarGame.UI {
         {
             if (_isPlayerNear)
             {
-                _hintText.text = "Use L to open the Box, Up \nand Down to scroll through fruits, \nEnter to choose a fruit \nor X to exit choosing mode \nand K to place a fruit.";
+                _infoText.text = $"{_currentAmount}/{_maxAmount}";
+                _hintText.text = "Use an Up Arrow to take a fruit from a fruit box.\nUp arrow to place a fruit in the box.";
             }
-            if (_isPlayerNear && Input.GetKeyDown(KeyCode.L) && !_showInfoText && !_player.PickUpHandler.IsHold)
+            if (_isPlayerNear && _currentFruit != null && Input.GetKeyDown(KeyCode.UpArrow) && _currentAmount < _maxAmount)
             {
-                _showInfoText = true;
-                _coroutine = StartCoroutine(StartingChoosing());
-            }
-            if (_isPlayerNear && _currentFruit != null && Input.GetKeyDown(KeyCode.K))
-            {
-                if (fruitsCounts.ContainsKey(_currentFruit.tag))
-                {
-                    fruitsCounts[_currentFruit.tag]++;
-                }
-                else
-                {
-                    fruitsCounts.Add(_currentFruit.tag, 1);
-                }
                 _player.PickUpHandler.DestroyCurrentPickUp();
-                UpdateMenuDisplay(_curChoice);
+                _currentFruit = null;
+                _currentAmount++;
+            }
+            else if (_isPlayerNear && _currentFruit == null && Input.GetKeyDown(KeyCode.UpArrow) && _currentAmount != 0)
+            {
+                GameObject fruit = Instantiate(_prefabName, _player.PickUpHandler.holdPoint);
+                _player.PickUpHandler.SetCurrentPickUp(fruit);
+                fruit.transform.SetParent(null);
+                _currentAmount--;
             }
         }
 
-        private void UpdateMenuDisplay(int highlightIndex = 0)
-        {
-            if (fruitsCounts.Count == 0)
-            {
-                _currentChosenFruit = null; // Явный сброс
-                return;
-            }
-
-            _infoText.text = "";
-
-            var sorted = fruitsCounts.OrderBy(kvp => kvp.Key).ToList();
-
-            _infoText.text = "";
-            for (int i = 0; i < sorted.Count; i++)
-            {
-                if (i == highlightIndex)
-                    _currentChosenFruit = _connections[sorted[i].Key];
-                _infoText.text += (i == highlightIndex)
-                    ? $"<{sorted[i].Key} x{sorted[i].Value}>\n"
-                    : $"{sorted[i].Key} x{sorted[i].Value}\n";
-            }
-        }
-
-        private IEnumerator StartingChoosing()
-        {
-            if (fruitsCounts.Count == 0)
-            {
-                _showInfoText = false;
-                yield break;
-            }
-
-            _showInfoText = true;
-            _infoText.gameObject.SetActive(true);
-            _curChoice = 0;
-            UpdateMenuDisplay(_curChoice);
-
-            while (true)
-            {
-                if (Input.GetKeyDown(KeyCode.UpArrow))
-                {
-                    _curChoice = (_curChoice - 1 + fruitsCounts.Count) % fruitsCounts.Count;
-                    UpdateMenuDisplay(_curChoice);
-                    yield return new WaitForSeconds(0.15f);
-                }
-                else if (Input.GetKeyDown(KeyCode.DownArrow))
-                {
-                    _curChoice = (_curChoice + 1) % fruitsCounts.Count;
-                    UpdateMenuDisplay(_curChoice);
-                    yield return new WaitForSeconds(0.15f);
-                }
-                else if (Input.GetKeyDown(KeyCode.Return))
-                {
-                    SetCurrentFruit();
-                    _infoText.gameObject.SetActive(false);
-                    yield break;
-                }
-                else if (Input.GetKeyDown(KeyCode.X))
-                {
-                    _infoText.gameObject.SetActive(false);
-                    yield break;
-                }
-
-                _showInfoText = false;
-                yield return null;
-            }
-        }
-
-        private void SetCurrentFruit()
-        {
-            UpdateMenuDisplay(_curChoice);
-            if (_player == null || !fruitsCounts.ContainsKey(_currentChosenFruit.tag)) return;
-
-            if (_player.PickUpHandler.PickUp != null)
-                Destroy(_player.PickUpHandler.PickUp);
-            GameObject holdingFruit = Instantiate(_currentChosenFruit, _player.PickUpHandler.holdPoint);
-            holdingFruit.transform.SetParent(null);
-
-            _player.PickUpHandler.SetCurrentPickUp(holdingFruit);
-
-            fruitsCounts[_currentChosenFruit.tag]--;
-            if (fruitsCounts[_currentChosenFruit.tag] == 0)
-                fruitsCounts.Remove(_currentChosenFruit.tag);
-            _curChoice = 0;
-        }
+        
         protected void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag(TagUtils.PlayerTagName))
             {
                 _player = other.GetComponent<PlayerCharacter>();
                 _isPlayerNear = true;
-                _Menu.SetActive(_isPlayerNear);
-                _hintText.gameObject.SetActive(_isPlayerNear);
+                _infoText.gameObject.SetActive(true);
+                _hintText.gameObject.SetActive(true);
                 GameObject pickUp = _player.PickUpHandler.PickUp;
-                if (pickUp != null && TagUtils.IsFruit(pickUp))
+                if (pickUp != null && pickUp.tag == _tagName)
                 {
                     _currentFruit = pickUp;
                 }
@@ -171,12 +75,6 @@ namespace BarGame.UI {
                 _player = null;
                 _infoText.gameObject.SetActive(false);
                 _hintText.gameObject.SetActive(false);
-                if (_coroutine != null)
-                {
-                    StopCoroutine( _coroutine );
-                    _coroutine = null;
-                }
-                _Menu.SetActive(_isPlayerNear);
             }
         }
     }

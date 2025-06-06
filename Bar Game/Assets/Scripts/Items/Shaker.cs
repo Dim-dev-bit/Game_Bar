@@ -8,8 +8,6 @@ namespace BarGame.Items {
 
         public List<string> ShakingActions;
 
-        private SpriteRenderer _spriteRenderer;
-
         public void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag(TagUtils.PlayerTagName))
@@ -28,21 +26,18 @@ namespace BarGame.Items {
                     player.ActionHandler.SetCurrentShaker(null);
             }
         }
-        protected void Start()
-        {
-            _spriteRenderer = GetComponent<SpriteRenderer>();
-        }
-
-        public void ChangeSprite()
-        {
-            _spriteRenderer.sprite = newSprite;
-        }
 
         public void AddToGlass(List<string> glassList)
         {
+            if (ShakingActions.Count == 1)
+            {
+                ShakingActions.RemoveAt(0);
+                return;
+            }
             glassList.Add("shaking");
             foreach (string action in ShakingActions)
             {
+                Debug.Log(action);
                 glassList.Add(action);
             }
 

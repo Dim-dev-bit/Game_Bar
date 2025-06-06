@@ -420,5 +420,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e2341aaee4a1484a8efb4cf07162a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Positions:
+  positions:
   - {fileID: 6230617048530038774}

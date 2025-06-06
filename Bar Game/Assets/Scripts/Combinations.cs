@@ -9,23 +9,23 @@ namespace BarGame {
         KeyCode.UpArrow,
         KeyCode.RightArrow,
         KeyCode.DownArrow,
-          KeyCode.LeftArrow,
+        KeyCode.LeftArrow,
         KeyCode.UpArrow,
         KeyCode.RightArrow,
         KeyCode.DownArrow
         };
 
         public static List<KeyCode> shakingSequence = new List<KeyCode>{
-            KeyCode.LeftArrow,
-            KeyCode.RightArrow,
-            KeyCode.LeftArrow,
-            KeyCode.RightArrow,
-            KeyCode.LeftArrow,
-            KeyCode.RightArrow,
-            KeyCode.LeftArrow,
-            KeyCode.RightArrow,
-            KeyCode.LeftArrow,
-            KeyCode.RightArrow
+            KeyCode.UpArrow,
+            KeyCode.DownArrow,
+            KeyCode.UpArrow,
+            KeyCode.DownArrow,      
+            KeyCode.UpArrow,
+            KeyCode.DownArrow,      
+            KeyCode.UpArrow,
+            KeyCode.DownArrow,      
+            KeyCode.UpArrow,
+            KeyCode.DownArrow
         };  
 
     }

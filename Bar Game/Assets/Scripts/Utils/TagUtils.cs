@@ -9,20 +9,31 @@ namespace BarGame {
         public const string PlayerTagName = "Player";
         public const string CustomerTagName = "Customer";
 
-        public const string AppleJuiceTagName = "AppleJuice";
+        public const string LimeJuiceTagName = "LimeJuice";
         public const string OrangeJuiceTagName = "OrangeJuice";
-        public const string StrawberryJuiceTagName = "StrawberryJuice";
+        public const string PapayaJuiceTagName = "PapayaJuice";
 
         public const string WineTagName = "Wine";
+        public const string RomTagName = "Rom";
+        public const string VodkaTagName = "Vodka";
+        public const string ViskyTagName = "Visky";
+        public const string TequilaTagName = "Tequila";
+        public const string BeerTagName = "Beer";
+        public const string JinTagName = "Jin";
+
+
+
+
+
         public const string ShakerTagName = "Shaker";
         public const string SpoonTagName = "Spoon";
         public const string GlassTagName = "Glass";
         public const string IceTagName = "Ice";
 
 
-        public const string StrawberryTagName = "Strawberry";
+        public const string PapayaTagName = "Papaya";
         public const string OrangeTagName = "Orange";
-        public const string AppleTagName = "Apple";
+        public const string LimeTagName = "Lime";
 
         public static bool IsShaker(GameObject obj) => obj.CompareTag(ShakerTagName);
         public static bool IsGlass(GameObject obj) => obj.CompareTag(GlassTagName);
@@ -52,33 +63,45 @@ namespace BarGame {
 
         private static List<string> _fruits = new List<string>
         {
-            StrawberryTagName,
+            PapayaTagName,
             OrangeTagName,
-            AppleTagName
+            LimeTagName
         };
 
         private static List<string> _ingredients = new List<string>
         {
-            AppleJuiceTagName,
+            LimeJuiceTagName,
             OrangeJuiceTagName,
-            StrawberryJuiceTagName,
+            PapayaJuiceTagName,
             IceTagName,
-            WineTagName
+            WineTagName,
+            RomTagName,
+            ViskyTagName,
+            VodkaTagName,
+            TequilaTagName,
+            BeerTagName,
+            JinTagName
         };
 
         public static List<string> PickUps = new List<string>
         {
-            AppleJuiceTagName, 
+            LimeJuiceTagName, 
             OrangeJuiceTagName,
-            StrawberryJuiceTagName,
+            PapayaJuiceTagName,
             ShakerTagName, 
             SpoonTagName, 
             GlassTagName,
             IceTagName,
             WineTagName,
-            StrawberryTagName,
+            RomTagName,
+            ViskyTagName,
+            VodkaTagName,
+            TequilaTagName,
+            BeerTagName,
+            JinTagName,            
+            PapayaTagName,
             OrangeTagName,
-            AppleTagName
+            LimeTagName
         };
 
 

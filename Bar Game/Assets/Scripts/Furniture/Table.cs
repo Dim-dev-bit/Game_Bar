@@ -1,21 +1,23 @@
 ﻿using BarGame.NPS;
 using BarGame.Player;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace BarGame.Furniture {
     public class Table : MonoBehaviour {
 
         [SerializeField]
-        public Transform[] Positions;
+        public Transform[] positions;
 
         private Vector2 _size = new Vector2(0, 0);
-
+        private PlayerCharacter player;
 
         public void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag(TagUtils.PlayerTagName))
             {
-                PlayerCharacter player = other.GetComponent<PlayerCharacter>();
+                Debug.Log("EBTER");
+                player = other.GetComponent<PlayerCharacter>();
                 if (player != null) {
                     player.PickUpHandler.SetCurrentTable(this);
                 }
@@ -32,7 +34,7 @@ namespace BarGame.Furniture {
         {
             if (other.CompareTag(TagUtils.PlayerTagName))
             {
-                PlayerCharacter player = other.GetComponent<PlayerCharacter>();
+                player = other.GetComponent<PlayerCharacter>();
                 if (player != null)
                     player.PickUpHandler.SetCurrentTable(null);
             }
@@ -43,23 +45,55 @@ namespace BarGame.Furniture {
                     customer.StateHandler.SetCurrentTable(null);
             }
         }
-        public bool PlaceItem(GameObject item)
+
+        private int? FindNearestPosition(Vector2 playerPosition)
         {
-            int positionIndex = -1;
-            for (int i = 0; i < Positions.Length; i++)
+            int nearestIndex = -1;
+            float minDistance = Mathf.Infinity;
+
+            for (int i = 0; i < positions.Length; i++)
             {
-                Collider2D[] _coll = Physics2D.OverlapBoxAll(Positions[i].position, _size, 0f, LayerUtils.PickUpLayer);
-                if (_coll.Length == 0 )
+                if (IsPositionOccupied(positions[i].position))
+                    continue;
+
+                float distance = Vector2.Distance(playerPosition, positions[i].position);
+
+                if (distance < minDistance)
                 {
-                    positionIndex = i;
-                    break;
+                    Debug.Log(distance);
+                    Debug.Log(minDistance);
+                    minDistance = distance;
+                    nearestIndex = i;
                 }
             }
-            if (positionIndex < 0 || positionIndex >= Positions.Length)
+
+            return nearestIndex >= 0 ? nearestIndex : null;
+        }
+
+        private bool IsPositionOccupied(Vector2 position)
+        {
+            Collider2D[] colliders = Physics2D.OverlapBoxAll(
+                position,
+                _size,
+                0f,
+                LayerUtils.PickUpLayer
+            );
+            Debug.Log(colliders.Length);
+
+            return colliders.Length > 0;
+        }
+        public bool PlaceItem(GameObject item)
+        {
+            if (item == null || player == null) return false;
+            Debug.Log("111");
+            int? positionIndex = FindNearestPosition(player.gameObject.transform.position);
+            if (!positionIndex.HasValue)
             {
+                Debug.Log("444");
                 return false;
             }
-            item.transform.position = Positions[positionIndex].position;
+            Debug.Log("123");
+            item.transform.position = positions[positionIndex.Value].position;
             return true;
 
         }

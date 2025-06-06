@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: ToFruitConversionObject
   m_EditorClassIdentifier: 
   conversions:
-  - name: Apple
+  - name: Lime
     prefab: {fileID: 65747819865330319, guid: f263e5e367b366947af74a767e498b33, type: 3}
   - name: Orange
     prefab: {fileID: 65747819865330319, guid: b0e8dcb66fca6314ab39b31232693530, type: 3}
-  - name: Strawberry
+  - name: Papaya
     prefab: {fileID: 7860022607201003358, guid: 5efb5cc809371174d93a145d9d9a307e, type: 3}

@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e586a8a8d566fb9489270c504ab76ea8, type: 3}
+  m_Name: LimeConversion
+  m_EditorClassIdentifier: 
+  conversions:
+  - name: Lime
+    prefab: {fileID: 65747819865330319, guid: f263e5e367b366947af74a767e498b33, type: 3}

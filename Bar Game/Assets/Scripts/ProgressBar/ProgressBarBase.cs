@@ -32,6 +32,7 @@ namespace BarGame.ProgressBar {
 
         public virtual void StartProgress(float duration)
         {
+            Debug.Log("STARTED");
             gameObject.SetActive(true);  // Активируем основной объект ПЕРВЫМ!
 
             targetTime = duration;

@@ -7,6 +7,8 @@ namespace BarGame.ProgressBar {
 
         [SerializeField] private int maxIceAmount = 5;
         [SerializeField] private float IceGeneratorInterval = 3f;
+        [SerializeField] private Transform IceGeneratorTransform;
+
 
         public int currentAmount = 0;
 
@@ -33,6 +35,11 @@ namespace BarGame.ProgressBar {
                     Debug.Log($"Ice generated: {(float)currentAmount / maxIceAmount}");
                 }
             }
+        }
+
+        protected void Update()
+        {
+            transform.parent.position = IceGeneratorTransform.position;
         }
     }
 }

@@ -21,6 +21,16 @@ TagManager:
   - AppleJuice
   - StrawberryJuice
   - OrangeJuice
+  - Lime
+  - Papaya
+  - LimeJuice
+  - PapayaJuice
+  - Visky
+  - Rom
+  - Vodka
+  - Jin
+  - Beer
+  - Tequila
   layers:
   - Default
   - TransparentFX

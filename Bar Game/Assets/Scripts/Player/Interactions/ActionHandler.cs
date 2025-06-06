@@ -16,9 +16,9 @@ namespace BarGame.Player.Interactions {
         private Shaker shaker;
         private Glass glass;
         private float _timerInSec = 0f;
-        private float _timerMax = 3f;
+        private float _timerMax = 2f;
         private bool _isPouring = false;
-        private List<KeyCode> playerInput = new List<KeyCode>();
+        public List<KeyCode> playerInput = new List<KeyCode>();
 
         protected void Awake()
         {
@@ -65,7 +65,7 @@ namespace BarGame.Player.Interactions {
         {
             if (shaker == null)
                 _stateHandler.SetState(StateHandler.State.Basic);
-            else if (Input.GetKey(KeyCode.H))
+            else if (Input.GetKey(KeyCode.DownArrow))
             {
                 if (!_isPouring)
                 {
@@ -95,9 +95,8 @@ namespace BarGame.Player.Interactions {
                     _stateHandler.SetState(StateHandler.State.Basic);
                 }
             }
-            else if (_timerInSec < _timerMax && Input.GetKeyUp(KeyCode.H))
+            else if (_timerInSec < _timerMax && Input.GetKeyUp(KeyCode.DownArrow))
             {
-                Debug.Log("WAS");
                 _isPouring = false;
                 canMove = true;
                 _timerInSec = 0;
@@ -181,7 +180,6 @@ namespace BarGame.Player.Interactions {
                 {
                     if (shaker != null && _stateHandler.IsState(StateHandler.State.Shaking))
                     {
-                        shaker.ChangeSprite();
                         shaker.ShakingActions.Add(_stateHandler.CurrentAction); // adding everything from shaker to the glass
                     }
                     if (glass != null && _stateHandler.IsState(StateHandler.State.Stirring))

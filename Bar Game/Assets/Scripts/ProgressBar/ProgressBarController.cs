@@ -10,7 +10,7 @@ namespace BarGame.ProgressBar {
             while (elapsedTime < targetTime)
             {
                 // Если клавиша отпущена - прерываем прогресс
-                if (!Input.GetKey(KeyCode.H))
+                if (!Input.GetKey(KeyCode.DownArrow))
                 {
                     ResetProgress();
                     yield break;

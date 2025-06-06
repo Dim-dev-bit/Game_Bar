@@ -32,7 +32,8 @@ namespace BarGame.Items {
         }
         protected void Update()
         {
-            _hintText.text = "Fill with juice using Up Arrow \nand wait for 3 seconds for a juice.";
+            if (_isPlayerNear)
+                _hintText.text = "Fill with juice using Up Arrow \nand wait for 3 seconds for a juice.";
             if (_isPlayerNear && _currentFruitName != null && !_isJuicing && Input.GetKeyDown(KeyCode.UpArrow))
             {
                 _player.PickUpHandler.DestroyCurrentPickUp();

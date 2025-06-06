@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -7768745092586228418, guid: 498d6c33c89360e43b56b0934609c613, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e12c36de24262f848a8c3174b11fcd62, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -134,6 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newSprite: {fileID: 6961084172283911529, guid: 498d6c33c89360e43b56b0934609c613, type: 3}
+  RecipeToMatch: []
 --- !u!1 &8149980797812744582
 GameObject:
   m_ObjectHideFlags: 0

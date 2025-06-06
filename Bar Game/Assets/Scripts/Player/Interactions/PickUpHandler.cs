@@ -48,20 +48,23 @@ namespace BarGame.Player.Interactions {
         {
             GameObject pickUp = null;
             var mask = LayerUtils.PickUpLayer;
-            RaycastHit2D _hit1;
-            RaycastHit2D _hit2;
 
-            Physics2D.queriesStartInColliders = false;
-            if (_mySpriteRenderer.flipX)
-                _hit1 = Physics2D.Raycast(transform.position, -Vector2.right, LookDistance, mask);
-            else
-                _hit1 = Physics2D.Raycast(transform.position, Vector2.right, LookDistance, mask);
+            Collider2D[] pickUps = Physics2D.OverlapCircleAll(transform.position, LookDistance, mask);
 
-            _hit2 = Physics2D.Raycast(transform.position - Vector3.up * LookDistance, Vector2.up, LookDistance * 2, mask);
-            if (_hit2.collider != null)
-                pickUp = _hit2.collider.gameObject;
-            if (_hit1.collider != null)
-                pickUp = _hit1.collider.gameObject;
+            if (pickUps.Length == 0)
+                return null;
+            
+            float closest = Mathf.Infinity;
+            foreach (var hit in pickUps)
+            {
+                float distance = Vector2.Distance(transform.position, hit.transform.position);
+                if (distance < closest)
+                {
+                    closest = distance;
+                    pickUp = hit.gameObject;
+                }
+            }
+            
 
             return pickUp;
         }
