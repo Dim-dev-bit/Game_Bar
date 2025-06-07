@@ -7,8 +7,12 @@ namespace BarGame.Items {
     public class Glass : MonoBehaviour {
 
         public Sprite newSprite;
+        [SerializeField]public string type;
 
-        [SerializeField]public List<string> RecipeToMatch; 
+        [SerializeField]public List<string> RecipeToMatch;
+
+        private PlayerCharacter _player;
+        private GameObject _ingredient;
 
         private SpriteRenderer _spriteRenderer;
         private enum Actions
@@ -18,6 +22,15 @@ namespace BarGame.Items {
             Stirring
         };
 
+        //protected void Update()
+        //{
+        //    if (_player != null && Input.GetKeyDown(KeyCode.DownArrow) && _ingredient != null)
+        //    {
+        //        RecipeToMatch.Add(_ingredient.tag);
+        //        _player.PickUpHandler.DestroyCurrentPickUp();
+        //    }
+        //}
+
 
         private void OnEnable()
         {
@@ -26,19 +39,26 @@ namespace BarGame.Items {
         public void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag(TagUtils.PlayerTagName)) { 
-                PlayerCharacter player = other.GetComponent<PlayerCharacter>();
-                if (player != null) { 
-                    player.ActionHandler.SetCurrentGlass(this);
+                _player = other.GetComponent<PlayerCharacter>();
+                if (_player != null) { 
+                    _player.ActionHandler.SetCurrentGlass(this);
                 }
+                GameObject item = _player.PickUpHandler.PickUp;
+                if (item != null && TagUtils.IsIngredient(item))
+                {
+                    _ingredient = item;
+                }
+
             }
         }
         public void OnTriggerExit2D(Collider2D other)
         {
             if (other.CompareTag(TagUtils.PlayerTagName))
             {
-                PlayerCharacter player = other.GetComponent<PlayerCharacter>();
-                if (player != null)
-                    player.ActionHandler.SetCurrentGlass(null);
+                if (_player != null)
+                    _player.ActionHandler.SetCurrentGlass(null);
+                _player = null;
+                _ingredient = null;
             }
         }
         protected void Start()

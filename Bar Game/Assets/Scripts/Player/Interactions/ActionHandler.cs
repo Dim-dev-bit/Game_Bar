@@ -63,9 +63,7 @@ namespace BarGame.Player.Interactions {
         }
         public void Filling()
         {
-            if (shaker == null)
-                _stateHandler.SetState(StateHandler.State.Basic);
-            else if (Input.GetKey(KeyCode.DownArrow))
+            if (Input.GetKey(KeyCode.DownArrow))
             {
                 if (!_isPouring)
                 {
@@ -88,7 +86,12 @@ namespace BarGame.Player.Interactions {
 
                     // Adding things to lists
                     if (_stateHandler.CurrentFillingObject == "Glass")
-                        shaker.AddToGlass(glass.RecipeToMatch);
+                    {
+                        if (_stateHandler.CurrentAction == "Shaker")
+                            shaker.AddToGlass(glass.RecipeToMatch);
+                        else
+                            glass.RecipeToMatch.Add(_stateHandler.CurrentAction);
+                    }
                     else if (_stateHandler.CurrentFillingObject == "Shaker")
                         shaker.ShakingActions.Add(_stateHandler.CurrentAction);
 

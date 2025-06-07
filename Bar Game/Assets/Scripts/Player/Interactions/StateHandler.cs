@@ -62,7 +62,8 @@ namespace BarGame.Player.Interactions {
                     actionHandler.playerInput.Add(KeyCode.LeftArrow);
                     _currentState = State.Stirring;
                 }
-                else if (_currentState == State.Basic && IsHold && TagUtils.IsShaker(_pickUp) && TagUtils.IsGlass(_nearObject) && Input.GetKeyDown(KeyCode.DownArrow))
+                else if (_currentState == State.Basic && IsHold && (TagUtils.IsIngredient(_pickUp) || TagUtils.IsShaker(_pickUp))
+                    && TagUtils.IsGlass(_nearObject) && Input.GetKeyDown(KeyCode.DownArrow))
                 {
                     CurrentFillingObject = TagUtils.GlassTagName;
                     _currentState = State.Filling;

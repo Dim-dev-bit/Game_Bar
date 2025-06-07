@@ -7,6 +7,10 @@ using UnityEngine.UI;
 namespace BarGame.Items {
     public class Juicer : MonoBehaviour {
         public ConversionObject _currentConversionObject;
+        public Animator juicerAnimator;
+
+        private int _whichFruit = 0;
+
         private PlayerCharacter _player;
 
         private string _currentFruitName;
@@ -40,13 +44,22 @@ namespace BarGame.Items {
                 _juicingFruitName = _currentFruitName;
                 _currentFruitName = null;
                 _isJuicing = true;
+                if (_juicingFruitName == "Orange")
+                    _whichFruit = 1;
+                else if (_juicingFruitName == "Lime")
+                    _whichFruit = 2;
+                else if (_juicingFruitName == "Papaya")
+                    _whichFruit = 3;
             }
             if (_isJuicing)
             {
+                Debug.Log(_whichFruit);
+                juicerAnimator.SetInteger("WhichFruit", _whichFruit);
                 _currentTimeOfJuicingSec += Time.deltaTime;
             }
             if (_currentTimeOfJuicingSec > _maxTimeOfJuicingSec)
             {
+                juicerAnimator.SetInteger("WhichFruit", 0);
                 _isJuicing = false;
                 GameObject juice = Instantiate(_connections[_juicingFruitName], new Vector3(_outputPosition.position.x, _outputPosition.position.y, 0), Quaternion.identity);
                 juice.transform.SetParent(null);

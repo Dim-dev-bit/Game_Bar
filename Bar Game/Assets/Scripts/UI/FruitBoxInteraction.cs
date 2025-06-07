@@ -17,7 +17,7 @@ namespace BarGame.UI {
         private GameObject _currentFruit;
 
         private int _maxAmount = 10;
-        private int _currentAmount = 0;
+        private int _currentAmount = 5;
 
         private bool _isPlayerNear = false;
 

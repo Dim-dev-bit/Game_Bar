@@ -18,7 +18,7 @@ namespace BarGame.UI {
         private int _leavingDialogueLength = 2;
 
        
-        private int _numberOfChoices = 2;
+        private int _numberOfChoices = 5;
 
         protected void Start()
         {

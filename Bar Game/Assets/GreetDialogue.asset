@@ -17,10 +17,16 @@ MonoBehaviour:
     image: {fileID: -7768745092586228418, guid: 498d6c33c89360e43b56b0934609c613, type: 3}
   - dialogue: question
     image: {fileID: -7768745092586228418, guid: 498d6c33c89360e43b56b0934609c613, type: 3}
-  - dialogue: valera
-    image: {fileID: -136462925507815419, guid: 498d6c33c89360e43b56b0934609c613, type: 3}
-  - dialogue: lemonade
-    image: {fileID: 1328147071604349809, guid: 498d6c33c89360e43b56b0934609c613, type: 3}
+  - dialogue: margarita
+    image: {fileID: -1506467997, guid: 67b69a9cf258c6444a6397c91f085d7e, type: 3}
+  - dialogue: ginFizz
+    image: {fileID: 21300000, guid: 9c28732a6338a324581d38a87f5ca97e, type: 3}
+  - dialogue: gimlet
+    image: {fileID: 1156077172, guid: 2f30fc9592078834ea9c36c5ed4514a4, type: 3}
+  - dialogue: wine
+    image: {fileID: 21300000, guid: fd0ada72967278447a53ebbbef80bb32, type: 3}
+  - dialogue: longIslandIcedTea
+    image: {fileID: -1245966042, guid: 67b69a9cf258c6444a6397c91f085d7e, type: 3}
   - dialogue: waiting line
     image: {fileID: -9219463877327293782, guid: 498d6c33c89360e43b56b0934609c613, type: 3}
   - dialogue: place of order

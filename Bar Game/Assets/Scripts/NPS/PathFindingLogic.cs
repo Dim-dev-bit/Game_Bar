@@ -2,12 +2,15 @@ using UnityEngine;
 using UnityEngine.AI;
 namespace BarGame.NPS {
     public class PathFindingLogic : MonoBehaviour {
-        [SerializeField]
         public bool IsStopped = false;
+
+        [SerializeField] private SpriteRenderer _spriteRenderer;
         public Transform _exit;
 
 
         private float _lookRadius = 100f;
+
+        private float _currentDirection;
 
         private GameObject _target;
         private NavMeshAgent _agent;
@@ -23,10 +26,16 @@ namespace BarGame.NPS {
             _agent = GetComponent<NavMeshAgent>();
             _agent.updateRotation = false;
             _agent.updateUpAxis = false;
+            if (_spriteRenderer == null) _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         }
 
         public void FindingSeat()
         {
+            _currentDirection = _agent.velocity.x;
+            if (_currentDirection > 0.1f)
+                _spriteRenderer.flipX = false;
+            else if (_currentDirection < -0.1f)
+                _spriteRenderer.flipX = true;
 
             if (_target == null)
             {
@@ -37,6 +46,7 @@ namespace BarGame.NPS {
                 _agent.SetDestination(_target.transform.position);
                 if (Vector2.Distance(_agent.transform.position, _target.transform.position) < eps)
                 {
+                    _spriteRenderer.flipX = true;
                     IsStopped = true;
                 }
             }   
@@ -46,6 +56,12 @@ namespace BarGame.NPS {
         {
             if (_exit != null)
             {
+                _currentDirection = _agent.velocity.x;
+                if (_currentDirection > 0.1f)
+                    _spriteRenderer.flipX = false;
+                else if (_currentDirection < -0.1f)
+                    _spriteRenderer.flipX = true;
+
                 _agent.SetDestination(_exit.position);
                 if (Vector2.Distance(_agent.transform.position, _exit.position) < eps)
                 {

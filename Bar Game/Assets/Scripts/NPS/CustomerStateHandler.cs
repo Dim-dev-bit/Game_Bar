@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngineInternal;
 
 namespace BarGame.NPS {
     public class CustomerStateHandler : MonoBehaviour {
@@ -38,11 +39,15 @@ namespace BarGame.NPS {
         private GameObject _givenGlassObj;
         private Glass _givenGlass;
 
+        private Collider2D hit;
+
         public ProgressBarForNPS progressBarController;
+        public Animator customerAnimator;
         
         private float _timerMM = 20f;
         private float _timerOW = 40f;
         private float _timerInSec = 0f;
+        private float _interactionRadius = 3f;
         protected void Awake()
         {
             _startingState = State.Searching;
@@ -63,19 +68,21 @@ namespace BarGame.NPS {
             switch (_currentState)
             {
                 case State.Phrasing:
+                    customerAnimator.SetBool("HasFoundSeat", true);
                     Phrasing();
                     CheckCurrentState();
                     break;
                 case State.OrderWaiting:
-
-                    
                     OrderWaiting();
                     break;
                 case State.Leaving:
+                    customerAnimator.SetBool("Leaving", true);
+                    customerAnimator.SetBool("HasFoundSeat", false);
                     _pathFindingLogic.ExitingBar(_recipeMatched);
                     break;
                 default:
                 case State.Searching:
+                    customerAnimator.SetBool("HasFoundSeat", false);
                     _pathFindingLogic.FindingSeat();
                     CheckCurrentState();
                     break;
@@ -141,32 +148,45 @@ namespace BarGame.NPS {
             }
 
             var mask = LayerUtils.PickUpLayer;
-            var rayDistance = 3f;
             if (_table != null)
             {
-                float direction = (_table.transform.position - transform.position).normalized.x;
-                Vector2 horizontalDirection = new Vector2(direction, 0);
-                RaycastHit2D hit = Physics2D.Raycast(
-                    transform.position,
-                    horizontalDirection,
-                    rayDistance,
-                    mask
-                );
-                if (hit.collider != null)
+                Debug.Log("TABLE");
+                Collider2D[] pickUps = Physics2D.OverlapCircleAll(transform.position, _interactionRadius, mask);
+
+                foreach (Collider2D collider in pickUps)
                 {
-                    _givenGlassObj = hit.collider.gameObject;
+                    Debug.Log(collider.gameObject.name);
+                    if (collider.CompareTag(TagUtils.GlassTagName))
+                    {
+                        hit = collider;
+                        break;
+                    }
+                }
+
+                if (hit != null)
+                {
+                    Debug.Log("GLASS");
+                    _givenGlassObj = hit.gameObject;
                     if (_givenGlassObj != null && TagUtils.IsGlass(_givenGlassObj))
                     {
                         _givenGlass = _givenGlassObj.GetComponent<Glass>();
+                        _givenGlass.RecipeToMatch.Add(_givenGlass.type);
                         _recipeMatched = CompareRecipes(_givenGlass.RecipeToMatch);
                         Debug.Log(_recipeMatched);
                         _givenGlass.RecipeToMatch.Clear();
                         _dialogueDisplayer.EndingPhrase(_recipeMatched);
                         _timerInSec = 0f;
                         _currentState = State.Leaving;
+                        hit = null;
                     }
                 }
             }
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, _interactionRadius);
         }
         private List<string> GetRecipe(string inputString)
         {

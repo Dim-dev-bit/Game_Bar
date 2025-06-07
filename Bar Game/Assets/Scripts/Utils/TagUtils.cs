@@ -80,7 +80,10 @@ namespace BarGame {
             VodkaTagName,
             TequilaTagName,
             BeerTagName,
-            JinTagName
+            JinTagName,
+            LimeTagName,
+            OrangeTagName,
+            PapayaTagName
         };
 
         public static List<string> PickUps = new List<string>
